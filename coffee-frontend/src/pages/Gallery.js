@@ -126,23 +126,19 @@ const Gallery = () => {
       </section>
 
       {/* Category Filter Section */}
-      <section className="py-8 bg-white/80 backdrop-blur-sm sticky top-0 z-30 border-b border-gray-200/50">
+      <section className="py-6 bg-white sticky top-0 z-30 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center gap-2 text-gray-700">
-              <Filter className="w-5 h-5 text-amber-600" />
-              <span className="font-semibold">Filter by:</span>
-            </div>
-            
-            <div className="flex flex-wrap gap-2">
+          <div className="flex flex-col items-center gap-4">
+            {/* Category Buttons */}
+            <div className="flex flex-wrap justify-center gap-3">
               {categories.map((category) => (
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-5 py-2 rounded-full font-medium text-sm transition-all duration-300 ${
+                  className={`px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 ${
                     selectedCategory === category
-                      ? 'bg-gradient-to-r from-amber-500 to-yellow-500 text-white shadow-lg shadow-amber-500/30 scale-105'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-gradient-to-r from-amber-600 to-yellow-600 text-white shadow-lg scale-105'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
                   }`}
                 >
                   {category}
@@ -150,8 +146,12 @@ const Gallery = () => {
               ))}
             </div>
             
-            <div className="text-sm text-gray-600 font-medium">
-              {filteredImages.length} {filteredImages.length === 1 ? 'image' : 'images'}
+            {/* Image Count */}
+            <div className="flex items-center gap-2 text-sm text-gray-500 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+              <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></div>
+              <span>
+                {filteredImages.length} {filteredImages.length === 1 ? 'Image' : 'Images'} Found
+              </span>
             </div>
           </div>
         </div>
@@ -255,10 +255,10 @@ const Gallery = () => {
         </div>
       </section>
 
-      {/* Lightbox Modal */}
+      {/* Enhanced Lightbox Modal */}
       {lightboxOpen && (
         <div 
-          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
           onClick={() => setLightboxOpen(false)}
         >
           <button
@@ -268,18 +268,20 @@ const Gallery = () => {
             <X className="w-6 h-6 text-white" />
           </button>
           
+          {/* Navigation Buttons */}
           <button
             onClick={(e) => { e.stopPropagation(); prevImage(); }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
-            style={{background: 'linear-gradient(135deg, #D4A574 0%, #FFD700 100%)'}}>
+            className="absolute left-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-2xl shadow-amber-500/50 z-10 animate-slide-in-left"
+          >
             <ChevronLeft className="w-7 h-7 text-coffee-900" />
           </button>
           
-          <div className="max-w-6xl max-h-[90vh] relative" onClick={(e) => e.stopPropagation()}>
+          {/* Image Container */}
+          <div className="max-w-6xl max-h-[90vh] relative animate-zoom-in" onClick={(e) => e.stopPropagation()}>
             <img
               src={displayImages[currentImageIndex].src || displayImages[currentImageIndex].image_url}
               alt={displayImages[currentImageIndex].title}
-              className="w-full h-full object-contain rounded-lg"
+              className="w-full h-full object-contain rounded-2xl shadow-2xl"
             />
             <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent rounded-b-lg">
               <h3 className="text-2xl font-bold text-white mb-2">
@@ -288,13 +290,19 @@ const Gallery = () => {
               <p className="text-amber-100">
                 {displayImages[currentImageIndex].description}
               </p>
+              {/* Image Counter */}
+              <div className="absolute top-6 left-6 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 z-10 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                <span className="text-white font-medium text-sm">
+                  {currentImageIndex + 1} / {displayImages.length}
+                </span>
+              </div>
             </div>
           </div>
           
           <button
             onClick={(e) => { e.stopPropagation(); nextImage(); }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
-            style={{background: 'linear-gradient(135deg, #D4A574 0%, #FFD700 100%)'}}>
+            className="absolute right-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-2xl shadow-amber-500/50 z-10 animate-slide-in-right"
+          >
             <ChevronRight className="w-7 h-7 text-coffee-900" />
           </button>
         </div>
@@ -304,6 +312,7 @@ const Gallery = () => {
 
       {/* CSS Animations */}
       <style>{`
+        /* Floating animation for decorative elements */
         @keyframes float {
           0%, 100% {
             transform: translateY(0px) scale(1);
@@ -317,6 +326,7 @@ const Gallery = () => {
           animation: float 6s ease-in-out infinite;
         }
 
+        /* Fade in animation */
         @keyframes fadeIn {
           from {
             opacity: 0;
@@ -326,7 +336,12 @@ const Gallery = () => {
           }
         }
 
-        @keyframes fadeInUp {
+        .animate-fade-in {
+          animation: fadeIn 0.8s ease-out;
+        }
+
+        /* Slide up animation */
+        @keyframes slideUp {
           from {
             opacity: 0;
             transform: translateY(30px);
@@ -337,10 +352,31 @@ const Gallery = () => {
           }
         }
 
+        .animate-slide-up {
+          animation: slideUp 0.8s ease-out 0.2s both;
+        }
+
+        /* Fade in up animation for gallery cards */
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(40px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-fade-in-up {
+          animation: fadeInUp 0.6s ease-out both;
+        }
+
+        /* Zoom in animation for lightbox */
         @keyframes zoomIn {
           from {
             opacity: 0;
-            transform: scale(0.9);
+            transform: scale(0.95);
           }
           to {
             opacity: 1;
@@ -348,11 +384,63 @@ const Gallery = () => {
           }
         }
 
+        .animate-zoom-in {
+          animation: zoomIn 0.8s ease-out 0.6s both;
+        }
+
+        /* Slide in from left */
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-60px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        .animate-slide-in-left {
+          animation: slideInLeft 0.8s ease-out 0.3s both;
+        }
+
+        /* Slide in from right */
+        @keyframes slideInRight {
+          from {
+            opacity: 0;
+            transform: translateX(60px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        .animate-slide-in-right {
+          animation: slideInRight 0.8s ease-out 0.4s both;
+        }
+
+        /* Text line clamp utility */
         .line-clamp-2 {
           display: -webkit-box;
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
+        }
+
+        /* Smooth scroll behavior */
+        html {
+          scroll-behavior: smooth;
+        }
+
+        /* Loading pulse animation enhancement */
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.5;
+          }
         }
       `}</style>
     </div>

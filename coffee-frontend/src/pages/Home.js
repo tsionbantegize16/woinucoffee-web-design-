@@ -59,8 +59,8 @@ const Home = () => {
         </div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6 text-white">
+          <div className="flex items-center justify-center min-h-[80vh]">
+            <div className="space-y-6 text-white text-center max-w-4xl">
               <div className="inline-block px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-amber-300/30 mb-2">
                 <span className="text-amber-200 text-sm font-medium">☕ From the Birthplace of Coffee</span>
               </div>
@@ -70,7 +70,7 @@ const Home = () => {
                   Perfect Coffee
                 </span>
               </h1>
-              <p className="text-xl text-amber-100 leading-relaxed max-w-2xl">
+              <p className="text-xl text-amber-100 leading-relaxed mx-auto">
                 Every bean is ethically sourced and roasted to perfection, delivering an unparalleled experience. 
                 From the highlands of Ethiopia to your cup—tradition meets excellence.
               </p>
@@ -79,7 +79,7 @@ const Home = () => {
               </p>
               
               {/* Stats Highlights */}
-              <div className="grid grid-cols-3 gap-6 py-6 max-w-2xl">
+              <div className="grid grid-cols-3 gap-6 py-6 max-w-2xl mx-auto">
                 <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-amber-300/20">
                   <div className="text-3xl md:text-4xl font-bold" style={{color: '#FFD700'}}>5k+</div>
                   <div className="text-sm text-amber-200 mt-1">Happy Clients</div>
@@ -94,7 +94,7 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-4 justify-center">
                 <Link to="/menu" className="px-8 py-4 rounded-full font-bold text-coffee-900 transition-all duration-300 hover:shadow-xl hover:scale-105 text-lg inline-flex items-center gap-2" style={{background: 'linear-gradient(135deg, #D4A574 0%, #FFD700 100%)'}}>
                   <ShoppingBag className="w-5 h-5" />
                   Order Now
