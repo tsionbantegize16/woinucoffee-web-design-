@@ -59,6 +59,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg text-coffee-900">Address</h3>
+                  <p className="text-amber-800">Nefas Silke, Woreda 01</p>
                   <p className="text-amber-800">Addis Ababa, Ethiopia</p>
                 </div>
               </div>
@@ -167,6 +168,52 @@ const Contact = () => {
                 {submitting ? 'Sending...' : 'Send Message'}
               </button>
             </form>
+          </div>
+        </div>
+
+        {/* Location Map Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="bg-white rounded-2xl shadow-soft overflow-hidden border border-amber-200">
+            <div className="p-8 text-center">
+              <h2 className="text-3xl font-bold text-coffee-900 mb-3">Visit Our Location</h2>
+              <p className="text-amber-800 mb-8">Find us at Nefas Silke, Woreda 01, Addis Ababa</p>
+            </div>
+            <div className="relative w-full h-[450px] lg:h-[500px]">
+              <iframe
+                title="Woinu Coffee Location"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.4897!2d38.7525!3d9.0320!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOcKwMDEnNTUuMiJOIDM4wrA0NScwOS4wIkU!5e0!3m2!1sen!2set!4v1234567890"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="grayscale-[0.3] contrast-[1.1]"
+              ></iframe>
+            </div>
+            <div className="p-6 bg-gradient-to-r from-amber-50 to-yellow-50 border-t border-amber-200">
+              <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-700">
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-5 h-5 text-amber-600" />
+                  <span className="font-medium">Easy to Find</span>
+                </div>
+                <div className="hidden sm:block w-px h-6 bg-amber-300"></div>
+                <div className="flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-amber-600" />
+                  <span className="font-medium">Open Daily</span>
+                </div>
+                <div className="hidden sm:block w-px h-6 bg-amber-300"></div>
+                <a 
+                  href="https://www.google.com/maps/search/Nefas+Silke+Woreda+01+Addis+Ababa" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition-colors duration-300 font-medium"
+                >
+                  <MapPin className="w-4 h-4" />
+                  Get Directions
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
