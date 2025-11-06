@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Coffee, Menu as MenuIcon, X, ShoppingBag } from 'lucide-react';
+import { Coffee, Menu as MenuIcon, X } from 'lucide-react';
 import { useState } from 'react';
 
 const Navbar = () => {
@@ -11,7 +11,6 @@ const Navbar = () => {
     { path: '/about', label: 'About' },
     { path: '/gallery', label: 'Gallery' },
     { path: '/blog', label: 'Blog' },
-    { path: '/contact', label: 'Contact' },
   ];
 
   return (
@@ -51,10 +50,16 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            <button className="btn-primary flex items-center gap-2">
-              <ShoppingBag className="w-5 h-5" />
-              Order Now
-            </button>
+            <Link 
+              to="/contact" 
+              className="px-6 py-2 rounded-lg font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-xl"
+              style={{
+                background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+                boxShadow: '0 4px 6px rgba(212, 165, 116, 0.3)'
+              }}
+            >
+              Contact Us
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -93,10 +98,17 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            <button className="w-full btn-primary flex items-center justify-center gap-2 mt-4">
-              <ShoppingBag className="w-5 h-5" />
-              Order Now
-            </button>
+            <Link 
+              to="/contact" 
+              className="block py-3 px-4 rounded-lg font-semibold text-white text-center mt-3"
+              style={{
+                background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+                boxShadow: '0 4px 6px rgba(212, 165, 116, 0.3)'
+              }}
+              onClick={() => setIsOpen(false)}
+            >
+              Contact Us
+            </Link>
           </div>
         </div>
       )}

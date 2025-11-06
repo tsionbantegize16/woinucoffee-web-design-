@@ -94,10 +94,11 @@ const Menu = () => {
                     <strong>Ingredients:</strong> {item.ingredients.join(', ')}
                   </p>
                 )}
-                <button className="btn-primary w-full flex items-center justify-center gap-2">
-                  <ShoppingCart className="w-5 h-5" />
-                  Add to Cart
-                </button>
+                <div className="mt-4 pt-4 border-t border-amber-200">
+                  <p className="text-center text-sm text-amber-700 font-medium">
+                    Available at our coffee shop
+                  </p>
+                </div>
               </div>
             </div>
           ))}

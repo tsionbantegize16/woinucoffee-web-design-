@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { supabase } from '../lib/supabaseClient';
 import { Camera, X, ZoomIn, Heart, Share2, Filter, Grid3x3, Layers, ChevronLeft, ChevronRight } from 'lucide-react';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Gallery = () => {
   const [images, setImages] = useState([]);
@@ -11,6 +12,7 @@ const Gallery = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [likedImages, setLikedImages] = useState(new Set());
 
   // Local gallery images
   const localGalleryImages = [
@@ -22,17 +24,112 @@ const Gallery = () => {
 
   useEffect(() => {
     fetchImages();
+    loadLikedImages();
   }, []);
+
+  const loadLikedImages = () => {
+    const saved = localStorage.getItem('likedGalleryImages');
+    if (saved) {
+      setLikedImages(new Set(JSON.parse(saved)));
+    }
+  };
+
+  const saveLikedImages = (liked) => {
+    localStorage.setItem('likedGalleryImages', JSON.stringify([...liked]));
+  };
 
   const fetchImages = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from('gallery_images')
-      .select('*')
-      .eq('is_active', true)
-      .order('display_order');
-    setImages(data || []);
-    setTimeout(() => setLoading(false), 500);
+    try {
+      const { data, error } = await supabase
+        .from('gallery_images')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order');
+      
+      if (error) throw error;
+      
+      // Map database images to match local format
+      const mappedImages = (data || []).map(img => ({
+        id: img.id,
+        src: img.image_url,
+        image_url: img.image_url,
+        title: img.title,
+        description: img.description || 'Beautiful coffee moments',
+        category: img.category || 'Ambiance',
+        likes: img.likes || 0,
+      }));
+      
+      setImages(mappedImages);
+    } catch (error) {
+      console.error('Error fetching gallery images:', error);
+      toast.error('Failed to load some images');
+    } finally {
+      setTimeout(() => setLoading(false), 500);
+    }
+  };
+
+  const handleLike = async (imageId, e) => {
+    e.stopPropagation();
+    
+    const newLiked = new Set(likedImages);
+    const isLiked = newLiked.has(imageId);
+    
+    if (isLiked) {
+      newLiked.delete(imageId);
+      toast('Removed from favorites', { icon: '💔' });
+    } else {
+      newLiked.add(imageId);
+      toast.success('Added to favorites!', { icon: '❤️' });
+    }
+    
+    setLikedImages(newLiked);
+    saveLikedImages(newLiked);
+    
+    // Update like count in database
+    try {
+      const image = displayImages.find(img => img.id === imageId);
+      if (image) {
+        const newLikeCount = isLiked ? (image.likes || 0) - 1 : (image.likes || 0) + 1;
+        await supabase
+          .from('gallery_images')
+          .update({ likes: Math.max(0, newLikeCount) })
+          .eq('id', imageId);
+        
+        // Update local state
+        setImages(prev => prev.map(img => 
+          img.id === imageId ? { ...img, likes: Math.max(0, newLikeCount) } : img
+        ));
+      }
+    } catch (error) {
+      console.error('Error updating like:', error);
+    }
+  };
+
+  const handleShare = async (image, e) => {
+    e.stopPropagation();
+    
+    const shareData = {
+      title: image.title,
+      text: `Check out this amazing photo from Woinu Coffee: ${image.title}`,
+      url: window.location.href,
+    };
+    
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        toast.success('Shared successfully!');
+      } else {
+        // Fallback: copy link to clipboard
+        await navigator.clipboard.writeText(window.location.href);
+        toast.success('Link copied to clipboard!');
+      }
+    } catch (error) {
+      if (error.name !== 'AbortError') {
+        console.error('Error sharing:', error);
+        toast.error('Failed to share');
+      }
+    }
   };
 
   const displayImages = images.length > 0 ? images : localGalleryImages;
@@ -57,6 +154,7 @@ const Gallery = () => {
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
+      <Toaster position="top-center" />
 
       {/* Hero Section */}
       <section className="relative pt-20 pb-12 overflow-hidden bg-white">
@@ -216,18 +314,26 @@ const Gallery = () => {
                             View
                           </button>
                           <button 
-                            onClick={(e) => { e.stopPropagation(); }}
-                            className="w-10 h-10 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg flex items-center justify-center hover:bg-white/30 transition-all duration-300"
+                            onClick={(e) => handleLike(image.id, e)}
+                            className={`w-10 h-10 backdrop-blur-sm border border-white/30 rounded-lg flex items-center justify-center hover:scale-110 transition-all duration-300 ${
+                              likedImages.has(image.id) ? 'bg-red-500/80' : 'bg-white/20 hover:bg-white/30'
+                            }`}
                           >
-                            <Heart className="w-4 h-4 text-white" />
+                            <Heart className={`w-4 h-4 ${likedImages.has(image.id) ? 'fill-white text-white' : 'text-white'}`} />
                           </button>
                           <button 
-                            onClick={(e) => { e.stopPropagation(); }}
-                            className="w-10 h-10 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg flex items-center justify-center hover:bg-white/30 transition-all duration-300"
+                            onClick={(e) => handleShare(image, e)}
+                            className="w-10 h-10 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg flex items-center justify-center hover:bg-white/30 hover:scale-110 transition-all duration-300"
                           >
                             <Share2 className="w-4 h-4 text-white" />
                           </button>
                         </div>
+                        {image.likes > 0 && (
+                          <div className="flex items-center gap-1 text-white/80 text-xs mt-2">
+                            <Heart className="w-3 h-3 fill-white" />
+                            <span>{image.likes} {image.likes === 1 ? 'like' : 'likes'}</span>
+                          </div>
+                        )}
                       </div>
                       
                       {/* Hover Indicator */}
