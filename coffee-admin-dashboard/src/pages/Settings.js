@@ -14,7 +14,17 @@ const Settings = () => {
   const fetchSettings = async () => {
     try {
       const { data, error } = await supabase.from('settings').select('*');
-      if (error) throw error;
+      if (error) {
+        console.error('Fetch settings error:', error);
+        
+        // If table doesn't exist, show a more helpful error
+        if (error.code === 'PGRST116') {
+          toast.error('Settings table not found. Please run the database setup script.');
+        } else {
+          toast.error(`Failed to load settings: ${error.message}`);
+        }
+        return;
+      }
 
       const settingsObj = {};
       data?.forEach((s) => {
@@ -22,6 +32,7 @@ const Settings = () => {
       });
       setSettings(settingsObj);
     } catch (error) {
+      console.error('Unexpected error fetching settings:', error);
       toast.error('Failed to load settings');
     } finally {
       setLoading(false);
@@ -33,12 +44,23 @@ const Settings = () => {
     try {
       // Convert settings object into an array of { key, value } objects for upsert
       const updates = Object.entries(settings).map(([key, value]) => ({ key, value }));
-      const { error } = await supabase.from('settings').upsert(updates);
+      
+      // Use upsert with onConflict to handle duplicate keys
+      const { error } = await supabase
+        .from('settings')
+        .upsert(updates, { 
+          onConflict: 'key',
+          ignoreDuplicates: false 
+        });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase upsert error:', error);
+        throw error;
+      }
       toast.success('Settings saved successfully!');
     } catch (error) {
-      toast.error('Failed to save settings');
+      console.error('Save settings error:', error);
+      toast.error(`Failed to save settings: ${error.message}`);
     } finally {
       setSaving(false);
     }
