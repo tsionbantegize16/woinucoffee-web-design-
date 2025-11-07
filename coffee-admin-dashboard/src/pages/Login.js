@@ -123,11 +123,6 @@ const Login = () => {
 
           {/* Footer */}
           <div className="mt-8 pt-6 border-t border-coffee-200 text-center">
-            <div className="flex items-center justify-center gap-2 text-sm text-coffee-600 mb-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span>Secure Connection</span>
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            </div>
             <p className="text-xs text-coffee-500">© 2024 Woinu Coffee. All rights reserved.</p>
           </div>
         </div>

@@ -180,10 +180,6 @@ const Dashboard = () => {
             <h2 className="text-2xl font-bold text-coffee-900">Recent Orders</h2>
             <p className="text-sm text-coffee-600">Latest customer orders</p>
           </div>
-          <div className="flex items-center space-x-2 text-sm text-coffee-600">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span>Live Updates</span>
-          </div>
         </div>
         
         {recentOrders.length > 0 ? (

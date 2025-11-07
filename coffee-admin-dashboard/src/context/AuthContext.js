@@ -33,9 +33,24 @@ export const AuthProvider = ({ children }) => {
     if (error) throw error;
   };
 
-  const changePassword = async (newPassword) => {
-    const { error } = await supabase.auth.updateUser({ password: newPassword });
-    if (error) throw error;
+  const changePassword = async (currentPassword, newPassword) => {
+    try {
+      // First verify the current password by attempting to sign in
+      const { error: signInError } = await supabase.auth.signInWithPassword({ 
+        email: user.email, 
+        password: currentPassword 
+      });
+      
+      if (signInError) {
+        throw new Error('Current password is incorrect');
+      }
+
+      // If current password is correct, update to new password
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) throw error;
+    } catch (error) {
+      throw error;
+    }
   };
 
   return (

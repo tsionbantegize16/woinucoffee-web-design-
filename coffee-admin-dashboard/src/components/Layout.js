@@ -147,10 +147,6 @@ const Layout = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="hidden md:flex items-center space-x-2 text-sm px-3 py-2 rounded-lg bg-green-50 border border-green-200">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-green-700 font-medium">System Online</span>
-              </div>
               <div className="px-5 py-2.5 rounded-xl text-sm font-bold shadow-md border-2" style={{
                 background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
                 color: '#FFFFFF',
