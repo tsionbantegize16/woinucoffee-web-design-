@@ -1,4 +1,4 @@
-import { Coffee, Facebook, Instagram, Twitter, Mail, Phone, MapPin, Heart } from 'lucide-react';
+import { Mail, Phone, MapPin, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -61,37 +61,19 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Opening Hours & Social */}
+          {/* Contact Button */}
           <div>
-            <h3 className="font-bold text-lg mb-4" style={{color: '#D4A574'}}>Hours / ሰዓት</h3>
-            <ul className="space-y-2 text-amber-100 text-sm">
-              <li className="flex justify-between">
-                <span>Mon - Fri</span>
-                <span style={{color: '#D4A574'}}>7AM - 10PM</span>
-              </li>
-              <li className="flex justify-between">
-                <span>Saturday</span>
-                <span style={{color: '#D4A574'}}>7AM - 10PM</span>
-              </li>
-              <li className="flex justify-between">
-                <span>Sunday</span>
-                <span style={{color: '#D4A574'}}>8AM - 9PM</span>
-              </li>
-            </ul>
-            <div className="mt-6">
-              <p className="text-sm mb-3" style={{color: '#D4A574'}}>Follow Our Journey</p>
-              <div className="flex space-x-3">
-                <a href="#" className="p-2 rounded-full transition-all duration-300" style={{background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'}} onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'} onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}>
-                  <Facebook className="w-5 h-5 text-white" />
-                </a>
-                <a href="#" className="p-2 rounded-full transition-all duration-300" style={{background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'}} onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'} onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}>
-                  <Instagram className="w-5 h-5 text-white" />
-                </a>
-                <a href="#" className="p-2 rounded-full transition-all duration-300" style={{background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'}} onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'} onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}>
-                  <Twitter className="w-5 h-5 text-white" />
-                </a>
-              </div>
-            </div>
+            <h3 className="font-bold text-lg mb-4" style={{color: '#D4A574'}}>Connect With Us</h3>
+            <Link 
+              to="/contact" 
+              className="inline-block px-6 py-3 rounded-lg font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-xl"
+              style={{
+                background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+                boxShadow: '0 4px 6px rgba(212, 165, 116, 0.3)'
+              }}
+            >
+              Contact Us
+            </Link>
           </div>
         </div>
 

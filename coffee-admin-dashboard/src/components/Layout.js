@@ -46,27 +46,29 @@ const Layout = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-amber-100">
       {/* Sidebar */}
-      <div className={`fixed left-0 top-0 h-full bg-white shadow-xl z-40 transition-all duration-300 ${sidebarOpen ? 'w-64' : 'w-20'}`}>
+      <div className={`fixed left-0 top-0 h-full bg-gradient-to-b from-white via-amber-50/30 to-white shadow-2xl z-40 transition-all duration-300 border-r-2 ${sidebarOpen ? 'w-72' : 'w-20'}`} style={{borderRightColor: '#D4A574'}}>
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="p-6 border-b border-amber-200">
+          <div className="p-6 border-b-2" style={{borderBottomColor: '#D4A574'}}>
             <div className="flex items-center space-x-3">
-              <img 
-                src="/logo.jpg" 
-                alt="Woinu Coffee Logo" 
-                className="h-12 w-auto object-contain"
-              />
+              <div className="p-2 rounded-xl" style={{background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'}}>
+                <img 
+                  src="/logo.jpg" 
+                  alt="Woinu Coffee Logo" 
+                  className="h-10 w-10 object-contain rounded-lg"
+                />
+              </div>
               {sidebarOpen && (
                 <div className="animate-fade-in">
                   <h1 className="text-xl font-bold text-coffee-900">Woinu Coffee</h1>
-                  <p className="text-xs text-amber-700">Admin Panel</p>
+                  <p className="text-xs font-medium" style={{color: '#D4A574'}}>Admin Panel</p>
                 </div>
               )}
             </div>
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-2 overflow-y-auto sidebar-scrollbar">
+          <nav className="flex-1 p-4 space-y-1 overflow-y-auto sidebar-scrollbar">
             {menuItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
@@ -75,13 +77,23 @@ const Layout = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`sidebar-item group ${isActive ? 'sidebar-item-active' : ''}`}
+                  className={`flex items-center px-4 py-3 rounded-xl transition-all duration-200 group ${
+                    isActive 
+                      ? 'text-white shadow-lg' 
+                      : 'text-coffee-700 hover:bg-amber-100 hover:text-coffee-900'
+                  }`}
+                  style={isActive ? {
+                    background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+                    transform: 'translateX(4px)'
+                  } : {}}
                 >
-                  <Icon className="w-5 h-5 flex-shrink-0" />
+                  <div className={`p-2 rounded-lg flex-shrink-0 ${isActive ? 'bg-white/20' : 'bg-amber-100/50 group-hover:bg-amber-200'}`}>
+                    <Icon className="w-5 h-5" />
+                  </div>
                   {sidebarOpen && (
-                    <div className="ml-3 animate-fade-in">
-                      <p className="font-medium">{item.label}</p>
-                      <p className="text-xs opacity-75">{item.description}</p>
+                    <div className="ml-3 animate-fade-in flex-1">
+                      <p className="font-semibold text-sm">{item.label}</p>
+                      <p className={`text-xs mt-0.5 ${isActive ? 'text-white/80' : 'text-coffee-500'}`}>{item.description}</p>
                     </div>
                   )}
                 </Link>
@@ -90,20 +102,21 @@ const Layout = () => {
           </nav>
 
           {/* User Profile */}
-          <div className="p-4 border-t border-amber-200">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 text-white rounded-full flex items-center justify-center" style={{background: 'linear-gradient(135deg, #D4A574 0%, # c19A6B 100%)'}}>
+          <div className="p-4 border-t-2" style={{borderTopColor: '#D4A574'}}>
+            <div className="flex items-center space-x-3 p-3 rounded-xl bg-gradient-to-r from-amber-50 to-white border border-amber-200">
+              <div className="w-10 h-10 text-white rounded-full flex items-center justify-center flex-shrink-0 shadow-md" style={{background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'}}>
                 <User className="w-5 h-5" />
               </div>
               {sidebarOpen && (
-                <div className="flex-1 animate-fade-in">
-                  <p className="text-sm font-medium text-coffee-900">
+                <div className="flex-1 animate-fade-in min-w-0">
+                  <p className="text-sm font-semibold text-coffee-900 truncate">
                     {user?.email || 'Admin User'}
                   </p>
                   <button
                     onClick={handleSignOut}
-                    className="text-xs text-amber-700 hover:text-amber-900 transition-colors"
+                    className="text-xs font-medium text-amber-700 hover:text-amber-900 transition-colors flex items-center gap-1 mt-1"
                   >
+                    <LogOut className="w-3 h-3" />
                     Sign out
                   </button>
                 </div>
@@ -114,16 +127,22 @@ const Layout = () => {
       </div>
 
       {/* Main Content */}
-      <div className={`transition-all duration-300 ease-in-out ${sidebarOpen ? 'lg:ml-72' : 'lg:ml-0'}`}>
+      <div className={`transition-all duration-300 ease-in-out ${sidebarOpen ? 'lg:ml-72' : 'lg:ml-20'}`}>
         {/* Enhanced Header */}
-        <header className="bg-white/80 backdrop-blur-sm border-b border-coffee-100 shadow-soft">
+        <header className="bg-white/90 backdrop-blur-md border-b-2 shadow-md" style={{borderBottomColor: '#D4A574'}}>
           <div className="flex items-center justify-between h-20 px-6">
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="p-2 text-coffee-600 hover:bg-coffee-100 rounded-xl transition-colors lg:hidden"
+                className="p-2 text-coffee-600 hover:bg-amber-100 rounded-xl transition-colors lg:hidden"
               >
                 <Menu className="w-6 h-6" />
+              </button>
+              <button
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="hidden lg:block p-2 text-coffee-600 hover:bg-amber-100 rounded-xl transition-colors"
+              >
+                {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
               <div>
                 <h1 className="text-2xl font-bold text-coffee-900">Admin Dashboard</h1>
@@ -131,11 +150,15 @@ const Layout = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="hidden md:flex items-center space-x-2 text-sm text-coffee-600">
+              <div className="hidden md:flex items-center space-x-2 text-sm px-3 py-2 rounded-lg bg-green-50 border border-green-200">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span>System Online</span>
+                <span className="text-green-700 font-medium">System Online</span>
               </div>
-              <div className="bg-gradient-amber text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-soft">
+              <div className="px-5 py-2.5 rounded-xl text-sm font-bold shadow-md border-2" style={{
+                background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+                color: '#FFFFFF',
+                borderColor: '#B8956A'
+              }}>
                 {new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
               </div>
             </div>

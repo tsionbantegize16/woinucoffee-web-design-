@@ -3,14 +3,46 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { supabase } from '../lib/supabaseClient';
-import { Coffee, Award, Users, Clock, ArrowRight, Star, ShoppingBag } from 'lucide-react';
+import { Coffee, Award, Users, Clock, ArrowRight, Star } from 'lucide-react';
 
 const Home = () => {
   const [featuredItems, setFeaturedItems] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
+  const [happyClients, setHappyClients] = useState(0);
+  const [coffeeRecipes, setCoffeeRecipes] = useState(0);
+  const [dailyOrders, setDailyOrders] = useState(0);
 
   useEffect(() => {
     fetchData();
+    
+    // Animate counters
+    const animateCounter = (setValue, target) => {
+      const duration = 2000; // 2 seconds
+      const steps = 60;
+      const increment = target / steps;
+      let current = 0;
+      
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          setValue(target);
+          clearInterval(timer);
+        } else {
+          setValue(Math.floor(current));
+        }
+      }, duration / steps);
+    };
+
+    // Start animations after a short delay
+    const timer = setTimeout(() => {
+      animateCounter(setHappyClients, 5000);
+      animateCounter(setCoffeeRecipes, 20);
+      animateCounter(setDailyOrders, 1000);
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   const fetchData = async () => {
@@ -81,24 +113,24 @@ const Home = () => {
               {/* Stats Highlights */}
               <div className="grid grid-cols-3 gap-6 py-6 max-w-2xl mx-auto">
                 <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-amber-300/20">
-                  <div className="text-3xl md:text-4xl font-bold" style={{color: '#FFD700'}}>5k+</div>
+                  <div className="text-3xl md:text-4xl font-bold" style={{color: '#FFD700'}}>
+                    {happyClients >= 1000 ? `${(happyClients / 1000).toFixed(1)}k+` : `${happyClients}+`}
+                  </div>
                   <div className="text-sm text-amber-200 mt-1">Happy Clients</div>
                 </div>
                 <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-amber-300/20">
-                  <div className="text-3xl md:text-4xl font-bold" style={{color: '#FFD700'}}>20+</div>
+                  <div className="text-3xl md:text-4xl font-bold" style={{color: '#FFD700'}}>{coffeeRecipes}+</div>
                   <div className="text-sm text-amber-200 mt-1">Coffee Recipes</div>
                 </div>
                 <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-amber-300/20">
-                  <div className="text-3xl md:text-4xl font-bold" style={{color: '#FFD700'}}>1k+</div>
+                  <div className="text-3xl md:text-4xl font-bold" style={{color: '#FFD700'}}>
+                    {dailyOrders >= 1000 ? `${(dailyOrders / 1000).toFixed(1)}k+` : `${dailyOrders}+`}
+                  </div>
                   <div className="text-sm text-amber-200 mt-1">Daily Orders</div>
                 </div>
               </div>
 
               <div className="flex flex-wrap gap-4 justify-center">
-                <Link to="/menu" className="px-8 py-4 rounded-full font-bold text-coffee-900 transition-all duration-300 hover:shadow-xl hover:scale-105 text-lg inline-flex items-center gap-2" style={{background: 'linear-gradient(135deg, #D4A574 0%, #FFD700 100%)'}}>
-                  <ShoppingBag className="w-5 h-5" />
-                  Order Now
-                </Link>
                 <Link to="/menu" className="px-8 py-4 rounded-full font-bold border-2 border-amber-300 text-white hover:bg-white/10 transition-all duration-300 text-lg inline-flex items-center gap-2">
                   View Menu <ArrowRight className="w-5 h-5" />
                 </Link>
@@ -160,7 +192,6 @@ const Home = () => {
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-coffee-900 mb-2">{item.name}</h3>
                     <p className="text-gray-600 mb-4 line-clamp-2">{item.description}</p>
-                    <button className="btn-primary w-full">Add to Order</button>
                   </div>
                 </div>
               ))
@@ -186,7 +217,7 @@ const Home = () => {
             {/* Image on Left */}
             <div className="relative">
               <img
-                src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=800&h=600&fit=crop"
+                src="/coffe cup.jpg"
                 alt="Hand-crafted coffee"
                 className="rounded-3xl shadow-2xl w-full h-[500px] object-cover"
               />
@@ -197,11 +228,8 @@ const Home = () => {
             
             {/* Content on Right */}
             <div className="space-y-6">
-              <div className="inline-block px-4 py-2 rounded-full border-2" style={{borderColor: '#D4A574', color: '#D4A574'}}>
-                <span className="text-sm font-semibold">OUR EXPERIENCE</span>
-              </div>
               <h2 className="text-4xl md:text-5xl font-bold text-coffee-900">
-                Coffee Heaven
+                Perfect Brew Experience
               </h2>
               <p className="text-amber-900 text-lg leading-relaxed">
                 The perfect atmosphere for conversation and creation. Our coffee house is designed to be your sanctuary—
@@ -242,9 +270,6 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Content on Left */}
             <div className="space-y-6 order-2 lg:order-1">
-              <div className="inline-block px-4 py-2 rounded-full border-2" style={{borderColor: '#D4A574', color: '#D4A574'}}>
-                <span className="text-sm font-semibold">SIGNATURE BLEND</span>
-              </div>
               <h2 className="text-4xl md:text-5xl font-bold text-coffee-900">
                 Woinu's Coffee
               </h2>
@@ -288,10 +313,6 @@ const Home = () => {
                 alt="Woinu signature coffee"
                 className="rounded-3xl shadow-2xl w-full h-[500px] object-cover"
               />
-              <div className="absolute -bottom-6 -left-6 px-6 py-4 bg-white rounded-2xl shadow-xl border-4" style={{borderColor: '#D4A574'}}>
-                <p className="text-coffee-900 font-bold text-lg">Est. 2014</p>
-                <p className="text-sm" style={{color: '#D4A574'}}>10 Years of Excellence</p>
-              </div>
             </div>
           </div>
         </div>
@@ -344,9 +365,6 @@ const Home = () => {
             <Link to="/contact" className="btn-primary">
               Find Us
             </Link>
-            <button className="btn-secondary">
-              Order Now
-            </button>
           </div>
         </div>
       </section>
