@@ -20,14 +20,14 @@ If you get permission errors, set up these policies:
 
 ### Allow Public Read Access
 ```sql
-CREATE POLICY "Public Access"
+CREATE POLICY "Gallery Images Public Access"
 ON storage.objects FOR SELECT
 USING ( bucket_id = 'gallery-images' );
 ```
 
 ### Allow Authenticated Upload
 ```sql
-CREATE POLICY "Authenticated users can upload"
+CREATE POLICY "Gallery Images Authenticated Upload"
 ON storage.objects FOR INSERT
 TO authenticated
 WITH CHECK ( bucket_id = 'gallery-images' );
@@ -35,7 +35,7 @@ WITH CHECK ( bucket_id = 'gallery-images' );
 
 ### Allow Authenticated Delete
 ```sql
-CREATE POLICY "Authenticated users can delete"
+CREATE POLICY "Gallery Images Authenticated Delete"
 ON storage.objects FOR DELETE
 TO authenticated
 USING ( bucket_id = 'gallery-images' );

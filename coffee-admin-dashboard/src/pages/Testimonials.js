@@ -1,24 +1,271 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
+import { Plus, Edit, Trash2, Star, User, CheckCircle, XCircle } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
+import TestimonialForm from '../components/TestimonialForm';
 
 const Testimonials = () => {
   const [testimonials, setTestimonials] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [selectedTestimonial, setSelectedTestimonial] = useState(null);
 
   useEffect(() => {
     fetchTestimonials();
   }, []);
 
   const fetchTestimonials = async () => {
-    const { data } = await supabase.from('testimonials').select('*').order('created_at', { ascending: false });
-    setTestimonials(data || []);
+    try {
+      const { data, error } = await supabase
+        .from('testimonials')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      setTestimonials(data || []);
+    } catch (error) {
+      toast.error('Failed to load testimonials');
+    } finally {
+      setLoading(false);
+    }
   };
 
+  const handleDelete = async (id) => {
+    if (!window.confirm('Delete this testimonial?')) return;
+    try {
+      const { error } = await supabase.from('testimonials').delete().eq('id', id);
+      if (error) throw error;
+      toast.success('Testimonial deleted!');
+      fetchTestimonials();
+    } catch (error) {
+      toast.error('Failed to delete');
+    }
+  };
+
+  const handleToggleApproval = async (testimonial) => {
+    try {
+      const { error } = await supabase
+        .from('testimonials')
+        .update({ is_approved: !testimonial.is_approved })
+        .eq('id', testimonial.id);
+      if (error) throw error;
+      toast.success(testimonial.is_approved ? 'Testimonial hidden' : 'Testimonial approved!');
+      fetchTestimonials();
+    } catch (error) {
+      toast.error('Failed to update');
+    }
+  };
+
+  const handleNewTestimonial = () => {
+    setSelectedTestimonial(null);
+    setShowForm(true);
+  };
+
+  const handleEdit = (testimonial) => {
+    setSelectedTestimonial(testimonial);
+    setShowForm(true);
+  };
+
+  const handleCloseForm = () => {
+    setShowForm(false);
+    setSelectedTestimonial(null);
+  };
+
+  const handleFormSuccess = () => {
+    fetchTestimonials();
+  };
+
+  const renderStars = (rating) => {
+    return (
+      <div className="flex gap-1">
+        {[...Array(5)].map((_, i) => (
+          <Star
+            key={i}
+            className={`w-4 h-4 ${
+              i < rating ? 'fill-amber-400 text-amber-400' : 'text-gray-300'
+            }`}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-amber-500 border-t-transparent"></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <Toaster />
-      <h1 className="text-3xl font-bold text-coffee-900">Testimonials</h1>
-      <p>Manage customer reviews and testimonials</p>
+      
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-4xl font-bold text-coffee-900 mb-2">Customer Testimonials</h1>
+          <p className="text-lg text-coffee-600">Manage customer reviews and feedback</p>
+        </div>
+        <button
+          onClick={handleNewTestimonial}
+          className="btn-primary flex items-center gap-2 text-lg px-6 py-3 shadow-lg hover:shadow-xl"
+        >
+          <Plus className="w-5 h-5" /> Add Testimonial
+        </button>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl border border-green-200">
+          <div className="flex items-center gap-4">
+            <div className="bg-green-500 p-3 rounded-full">
+              <CheckCircle className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <p className="text-sm text-green-700 font-medium">Approved</p>
+              <p className="text-3xl font-bold text-green-900">
+                {testimonials.filter(t => t.is_approved).length}
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-6 rounded-xl border border-amber-200">
+          <div className="flex items-center gap-4">
+            <div className="bg-amber-500 p-3 rounded-full">
+              <Star className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <p className="text-sm text-amber-700 font-medium">Average Rating</p>
+              <p className="text-3xl font-bold text-amber-900">
+                {testimonials.length > 0
+                  ? (testimonials.reduce((sum, t) => sum + t.rating, 0) / testimonials.length).toFixed(1)
+                  : '0'}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200">
+          <div className="flex items-center gap-4">
+            <div className="bg-blue-500 p-3 rounded-full">
+              <User className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <p className="text-sm text-blue-700 font-medium">Total Reviews</p>
+              <p className="text-3xl font-bold text-blue-900">{testimonials.length}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Testimonials Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+        {testimonials.map((testimonial, index) => (
+          <div
+            key={testimonial.id}
+            className={`bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border-2 ${
+              testimonial.is_approved ? 'border-green-200' : 'border-gray-200'
+            } animate-slide-up`}
+            style={{ animationDelay: `${index * 50}ms` }}
+          >
+            {/* Header with Image */}
+            <div className="bg-gradient-to-r from-amber-500 to-amber-600 p-6 pb-16 relative">
+              <div className="absolute -bottom-12 left-6">
+                {testimonial.customer_image ? (
+                  <img
+                    src={testimonial.customer_image}
+                    alt={testimonial.customer_name}
+                    className="w-24 h-24 rounded-full border-4 border-white shadow-lg object-cover"
+                  />
+                ) : (
+                  <div className="w-24 h-24 rounded-full border-4 border-white shadow-lg bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                    <User className="w-12 h-12 text-gray-500" />
+                  </div>
+                )}
+              </div>
+              {testimonial.is_approved && (
+                <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                  <CheckCircle className="w-3 h-3" />
+                  Approved
+                </div>
+              )}
+            </div>
+
+            {/* Content */}
+            <div className="p-6 pt-16 space-y-4">
+              <div>
+                <h3 className="text-xl font-bold text-coffee-900 mb-1">
+                  {testimonial.customer_name}
+                </h3>
+                {renderStars(testimonial.rating)}
+              </div>
+
+              <p className="text-gray-700 leading-relaxed line-clamp-4">
+                "{testimonial.review}"
+              </p>
+
+              <div className="text-xs text-gray-500">
+                {new Date(testimonial.created_at).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-2 pt-4 border-t">
+                <button
+                  onClick={() => handleToggleApproval(testimonial)}
+                  className={`flex-1 py-2 px-3 rounded-lg font-medium text-sm transition-colors ${
+                    testimonial.is_approved
+                      ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      : 'bg-green-100 text-green-700 hover:bg-green-200'
+                  }`}
+                >
+                  {testimonial.is_approved ? 'Hide' : 'Approve'}
+                </button>
+                <button
+                  onClick={() => handleEdit(testimonial)}
+                  className="px-4 py-2 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-lg font-medium text-sm transition-colors"
+                >
+                  <Edit className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => handleDelete(testimonial.id)}
+                  className="px-4 py-2 bg-red-100 text-red-700 hover:bg-red-200 rounded-lg font-medium text-sm transition-colors"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Empty State */}
+      {testimonials.length === 0 && (
+        <div className="text-center py-16 bg-white rounded-xl shadow">
+          <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Star className="w-10 h-10 text-amber-500" />
+          </div>
+          <h3 className="text-xl font-semibold text-coffee-800 mb-2">No testimonials yet</h3>
+          <p className="text-coffee-600 mb-6">Start collecting customer reviews</p>
+          <button onClick={handleNewTestimonial} className="btn-primary inline-flex items-center gap-2">
+            <Plus className="w-5 h-5" /> Add First Testimonial
+          </button>
+        </div>
+      )}
+
+      {/* Testimonial Form Modal */}
+      {showForm && (
+        <TestimonialForm
+          testimonial={selectedTestimonial}
+          onClose={handleCloseForm}
+          onSuccess={handleFormSuccess}
+        />
+      )}
     </div>
   );
 };

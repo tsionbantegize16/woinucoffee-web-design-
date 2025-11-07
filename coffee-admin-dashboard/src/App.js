@@ -6,10 +6,8 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import MenuItems from './pages/MenuItems';
 import Categories from './pages/Categories';
-import Orders from './pages/Orders';
 import Gallery from './pages/Gallery';
 import BlogPosts from './pages/BlogPosts';
-import Promotions from './pages/Promotions';
 import Testimonials from './pages/Testimonials';
 import Messages from './pages/Messages';
 import Settings from './pages/Settings';
@@ -32,10 +30,8 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="menu-items" element={<MenuItems />} />
             <Route path="categories" element={<Categories />} />
-            <Route path="orders" element={<Orders />} />
             <Route path="gallery" element={<Gallery />} />
             <Route path="blog" element={<BlogPosts />} />
-            <Route path="promotions" element={<Promotions />} />
             <Route path="testimonials" element={<Testimonials />} />
             <Route path="messages" element={<Messages />} />
             <Route path="settings" element={<Settings />} />

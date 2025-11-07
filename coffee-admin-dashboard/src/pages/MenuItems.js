@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { Plus, Edit, Trash2, Search, Filter, Coffee, Star, DollarSign } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
+import MenuItemForm from '../components/MenuItemForm';
 
 const MenuItems = () => {
   const [items, setItems] = useState([]);
@@ -11,15 +12,6 @@ const MenuItems = () => {
   const [editingItem, setEditingItem] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    price: '',
-    category_id: '',
-    image_url: '',
-    is_available: true,
-    featured: false
-  });
 
   useEffect(() => {
     fetchItems();
@@ -54,63 +46,23 @@ const MenuItems = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const itemData = {
-        ...formData,
-        price: parseFloat(formData.price),
-        slug: formData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
-      };
-
-      if (editingItem) {
-        const { error } = await supabase
-          .from('menu_items')
-          .update(itemData)
-          .eq('id', editingItem.id);
-        if (error) throw error;
-        toast.success('Menu item updated!');
-      } else {
-        const { error } = await supabase
-          .from('menu_items')
-          .insert(itemData);
-        if (error) throw error;
-        toast.success('Menu item added!');
-      }
-
-      setShowModal(false);
-      setEditingItem(null);
-      setFormData({
-        name: '',
-        description: '',
-        price: '',
-        category_id: '',
-        image_url: '',
-        is_available: true,
-        featured: false
-      });
-      fetchItems();
-    } catch (error) {
-      toast.error('Failed to save menu item');
-    } finally {
-      setLoading(false);
-    }
+  const handleNewItem = () => {
+    setEditingItem(null);
+    setShowModal(true);
   };
 
   const handleEdit = (item) => {
     setEditingItem(item);
-    setFormData({
-      name: item.name,
-      description: item.description,
-      price: item.price,
-      category_id: item.category_id,
-      image_url: item.image_url,
-      is_available: item.is_available,
-      featured: item.featured
-    });
     setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setEditingItem(null);
+  };
+
+  const handleFormSuccess = () => {
+    fetchItems();
   };
 
   const handleDelete = async (id) => {
@@ -151,7 +103,7 @@ const MenuItems = () => {
           <p className="text-lg text-coffee-600">Manage your coffee shop products</p>
         </div>
         <button
-          onClick={() => setShowModal(true)}
+          onClick={handleNewItem}
           className="btn-primary flex items-center gap-2 text-lg px-6 py-3"
         >
           <Plus className="w-5 h-5" /> Add Item
@@ -202,7 +154,7 @@ const MenuItems = () => {
                   alt={item.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
-                {item.featured && (
+                {item.is_featured && (
                   <div className="absolute top-2 right-2 bg-amber-500 text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
                     <Star className="w-3 h-3" />
                     Featured
@@ -274,139 +226,14 @@ const MenuItems = () => {
         </div>
       )}
 
-      {/* Enhanced Modal */}
+      {/* Menu Item Form Modal */}
       {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="p-8">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-coffee-900">
-                  {editingItem ? 'Edit Menu Item' : 'Add Menu Item'}
-                </h2>
-                <button
-                  onClick={() => {
-                    setShowModal(false);
-                    setEditingItem(null);
-                    setFormData({
-                      name: '',
-                      description: '',
-                      price: '',
-                      category_id: '',
-                      image_url: '',
-                      is_available: true,
-                      featured: false
-                    });
-                  }}
-                  className="text-coffee-400 hover:text-coffee-600 text-2xl font-bold"
-                >
-                  ×
-                </button>
-              </div>
-              <form onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="label">Name</label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="input-field"
-                    />
-                  </div>
-                  <div>
-                    <label className="label">Price</label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      required
-                      value={formData.price}
-                      onChange={(e) => setFormData({...formData, price: e.target.value})}
-                      className="input-field"
-                    />
-                  </div>
-                  <div>
-                    <label className="label">Category</label>
-                    <select
-                      required
-                      value={formData.category_id}
-                      onChange={(e) => setFormData({...formData, category_id: e.target.value})}
-                      className="input-field"
-                    >
-                      <option value="">Select Category</option>
-                      {categories.map(cat => (
-                        <option key={cat.id} value={cat.id}>{cat.name}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="label">Image URL</label>
-                    <input
-                      type="url"
-                      value={formData.image_url}
-                      onChange={(e) => setFormData({...formData, image_url: e.target.value})}
-                      className="input-field"
-                      placeholder="https://example.com/image.jpg"
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <label className="label">Description</label>
-                    <textarea
-                      value={formData.description}
-                      onChange={(e) => setFormData({...formData, description: e.target.value})}
-                      className="input-field"
-                      rows={3}
-                    />
-                  </div>
-                  <div className="md:col-span-2 flex gap-6">
-                    <label className="flex items-center gap-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={formData.is_available}
-                        onChange={(e) => setFormData({...formData, is_available: e.target.checked})}
-                        className="w-5 h-5 text-amber-500 rounded focus:ring-amber-500"
-                      />
-                      <span className="font-medium text-coffee-700">Available</span>
-                    </label>
-                    <label className="flex items-center gap-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={formData.featured}
-                        onChange={(e) => setFormData({...formData, featured: e.target.checked})}
-                        className="w-5 h-5 text-amber-500 rounded focus:ring-amber-500"
-                      />
-                      <span className="font-medium text-coffee-700">Featured</span>
-                    </label>
-                  </div>
-                </div>
-                <div className="flex gap-4 mt-8">
-                  <button type="submit" className="btn-primary" disabled={loading}>
-                    {loading ? 'Saving...' : (editingItem ? 'Update' : 'Add')}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowModal(false);
-                      setEditingItem(null);
-                      setFormData({
-                        name: '',
-                        description: '',
-                        price: '',
-                        category_id: '',
-                        image_url: '',
-                        is_available: true,
-                        featured: false
-                      });
-                    }}
-                    className="btn-outline"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
+        <MenuItemForm
+          item={editingItem}
+          categories={categories}
+          onClose={handleCloseModal}
+          onSuccess={handleFormSuccess}
+        />
       )}
     </div>
   );

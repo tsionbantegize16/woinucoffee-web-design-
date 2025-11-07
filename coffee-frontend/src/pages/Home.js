@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { supabase } from '../lib/supabaseClient';
-import { Coffee, Award, Users, Clock, ArrowRight, Star } from 'lucide-react';
+import { Coffee, Award, Users, Clock, ArrowRight, Star, ShoppingBag, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 
 const Home = () => {
   const [featuredItems, setFeaturedItems] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [happyClients, setHappyClients] = useState(0);
   const [coffeeRecipes, setCoffeeRecipes] = useState(0);
   const [dailyOrders, setDailyOrders] = useState(0);
@@ -73,6 +74,23 @@ const Home = () => {
 
   const displayItems = featuredItems.length > 0 ? featuredItems : mockFeaturedItems;
   const displayTestimonials = testimonials.length > 0 ? testimonials : mockTestimonials;
+
+  // Carousel navigation
+  const nextTestimonial = () => {
+    setCurrentTestimonial((prev) => (prev + 1) % displayTestimonials.length);
+  };
+
+  const prevTestimonial = () => {
+    setCurrentTestimonial((prev) => (prev - 1 + displayTestimonials.length) % displayTestimonials.length);
+  };
+
+  // Auto-rotate carousel
+  useEffect(() => {
+    if (displayTestimonials.length > 1) {
+      const interval = setInterval(nextTestimonial, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [displayTestimonials.length]);
 
   return (
     <div className="min-h-screen">
@@ -174,32 +192,27 @@ const Home = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredItems.length > 0 ? (
-              featuredItems.map((item) => (
-                <div key={item.id} className="bg-white rounded-2xl shadow-soft overflow-hidden hover:shadow-medium transition-all duration-300 hover:-translate-y-1 border border-amber-200">
-                  <div className="h-48 bg-amber-50 relative">
-                    {item.image_url ? (
-                      <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="flex items-center justify-center h-full" style={{background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'}}>
-                        <Coffee className="w-16 h-16 text-white" />
-                      </div>
-                    )}
-                    <div className="absolute top-3 right-3 px-3 py-1 rounded-full font-bold text-white" style={{background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'}}>
-                      ${item.price}
+            {displayItems.map((item) => (
+              <div key={item.id} className="bg-white rounded-2xl shadow-soft overflow-hidden hover:shadow-medium transition-all duration-300 hover:-translate-y-1 border border-amber-200">
+                <div className="h-48 bg-amber-50 relative">
+                  {item.image_url ? (
+                    <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="flex items-center justify-center h-full" style={{background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'}}>
+                      <Coffee className="w-16 h-16 text-white" />
                     </div>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-coffee-900 mb-2">{item.name}</h3>
-                    <p className="text-gray-600 mb-4 line-clamp-2">{item.description}</p>
+                  )}
+                  <div className="absolute top-3 right-3 px-3 py-1 rounded-full font-bold text-white" style={{background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'}}>
+                    ${item.price}
                   </div>
                 </div>
-              ))
-            ) : (
-              <div className="col-span-3 text-center py-12 text-gray-500">
-                Loading featured items...
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-coffee-900 mb-2">{item.name}</h3>
+                  <p className="text-gray-600 mb-4 line-clamp-2">{item.description}</p>
+                  <button className="btn-primary w-full">Add to Order</button>
+                </div>
               </div>
-            )}
+            ))}
           </div>
 
           <div className="text-center mt-12">
@@ -318,35 +331,110 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
-      {testimonials.length > 0 && (
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold mb-4 text-coffee-900">What Our Customers Say</h2>
-              <p className="text-amber-700 text-lg">Real experiences from our coffee lovers</p>
+      {/* Testimonials Carousel */}
+      {displayTestimonials.length > 0 && (
+        <section className="py-12 bg-gradient-to-br from-amber-50 via-white to-amber-50">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Header */}
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-amber-400 to-amber-500 rounded-full mb-4 shadow-md">
+                <Quote className="w-7 h-7 text-white" />
+              </div>
+              <h2 className="text-3xl font-bold mb-2 text-coffee-900">What Our Customers Say</h2>
+              <p className="text-amber-700 text-base">Real experiences from our coffee lovers</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {displayTestimonials.map((testimonial) => (
-                <div key={testimonial.id} className="bg-gradient-to-br from-coffee-900 to-coffee-800 rounded-2xl shadow-2xl p-8 hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 border-2" style={{borderColor: '#D4A574'}}>
-                  <div className="flex items-center mb-6">
-                    {[...Array(testimonial.rating || 5)].map((_, i) => (
-                      <Star key={i} className="w-6 h-6 fill-current" style={{color: '#FFD700'}} />
-                    ))}
+            {/* Carousel Container */}
+            <div className="relative">
+              {/* Main Testimonial Card */}
+              <div className="bg-white rounded-2xl shadow-xl p-8 md:p-10 mx-auto max-w-3xl border-2" style={{borderColor: '#D4A574'}}>
+                <div className="flex flex-col md:flex-row items-center gap-8">
+                  {/* Customer Image */}
+                  <div className="flex-shrink-0">
+                    {displayTestimonials[currentTestimonial].customer_image ? (
+                      <img
+                        src={displayTestimonials[currentTestimonial].customer_image}
+                        alt={displayTestimonials[currentTestimonial].customer_name}
+                        className="w-20 h-20 rounded-full border-4 border-amber-100 shadow-lg object-cover"
+                      />
+                    ) : (
+                      <div className="w-20 h-20 rounded-full border-4 border-amber-100 shadow-lg bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center">
+                        <span className="text-white text-2xl font-bold">
+                          {displayTestimonials[currentTestimonial].customer_name.charAt(0)}
+                        </span>
+                      </div>
+                    )}
                   </div>
-                  <p className="text-amber-100 mb-6 italic text-lg leading-relaxed">"{testimonial.review}"</p>
-                  <div className="flex items-center pt-4 border-t" style={{borderColor: '#D4A574'}}>
-                    <div className="w-14 h-14 rounded-full flex items-center justify-center text-coffee-900 font-bold text-xl mr-4" style={{background: 'linear-gradient(135deg, #D4A574 0%, #FFD700 100%)'}}>
-                      {testimonial.customer_name.charAt(0)}
+
+                  {/* Content */}
+                  <div className="flex-1 text-center md:text-left">
+                    {/* Stars */}
+                    <div className="flex items-center justify-center md:justify-start gap-1 mb-3">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-5 h-5 ${
+                            i < (displayTestimonials[currentTestimonial].rating || 5)
+                              ? 'fill-amber-400 text-amber-400'
+                              : 'text-gray-300'
+                          }`}
+                        />
+                      ))}
                     </div>
-                    <div>
-                      <p className="font-bold text-white text-lg">{testimonial.customer_name}</p>
-                      <p className="text-sm" style={{color: '#D4A574'}}>Verified Customer</p>
-                    </div>
+
+                    {/* Name */}
+                    <h3 className="text-xl font-bold text-coffee-900 mb-2">
+                      {displayTestimonials[currentTestimonial].customer_name}
+                    </h3>
+
+                    {/* Review */}
+                    <p className="text-gray-700 leading-relaxed italic text-base mb-3">
+                      "{displayTestimonials[currentTestimonial].review}"
+                    </p>
+
+                    {/* Verified Badge */}
+                    <p className="text-amber-600 font-medium text-sm">Verified Customer</p>
                   </div>
                 </div>
-              ))}
+              </div>
+
+              {/* Navigation Arrows */}
+              {displayTestimonials.length > 1 && (
+                <>
+                  <button
+                    onClick={prevTestimonial}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-amber-50 transition-colors group"
+                    aria-label="Previous testimonial"
+                  >
+                    <ChevronLeft className="w-5 h-5 text-amber-600 group-hover:text-amber-700" />
+                  </button>
+                  <button
+                    onClick={nextTestimonial}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-amber-50 transition-colors group"
+                    aria-label="Next testimonial"
+                  >
+                    <ChevronRight className="w-5 h-5 text-amber-600 group-hover:text-amber-700" />
+                  </button>
+                </>
+              )}
+
+              {/* Dots Indicator */}
+              {displayTestimonials.length > 1 && (
+                <div className="flex justify-center gap-2 mt-6">
+                  {displayTestimonials.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentTestimonial(index)}
+                      className={`w-2 h-2 rounded-full transition-all ${
+                        index === currentTestimonial
+                          ? 'bg-amber-500 w-6'
+                          : 'bg-amber-200 hover:bg-amber-300'
+                      }`}
+                      aria-label={`Go to testimonial ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </section>
