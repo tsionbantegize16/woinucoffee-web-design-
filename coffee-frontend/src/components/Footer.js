@@ -52,7 +52,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center space-x-2 text-amber-100">
                 <Mail className="w-5 h-5" style={{color: '#D4A574'}} />
-                <span>info@woinucoffee.com</span>
+                <span>contact@woinucoffee.com</span>
               </li>
               <li className="flex items-start space-x-2 text-amber-100">
                 <MapPin className="w-5 h-5 mt-1" style={{color: '#D4A574'}} />
