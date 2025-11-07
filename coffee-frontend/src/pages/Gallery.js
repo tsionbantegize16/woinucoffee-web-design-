@@ -16,10 +16,10 @@ const Gallery = () => {
 
   // Local gallery images
   const localGalleryImages = [
-    { id: 1, src: '/1.jpg', title: 'Our Signature Coffee Moments', category: 'Ambiance', description: 'Experience the warmth and comfort of Woinu Coffee' },
-    { id: 2, src: '/2.jpg', title: 'Crafted with Passion', category: 'Coffee Art', description: 'Every cup is a masterpiece' },
-    { id: 3, src: '/3.jpg', title: 'Ethiopian Coffee Excellence', category: 'Products', description: 'Premium beans from the birthplace of coffee' },
-    { id: 4, src: '/4.jpg', title: 'A Journey in Every Cup', category: 'Experience', description: '3,000 years of tradition in every sip' },
+    { id: 1, src: '/1.jpg', title: 'Farmers At Sunrise', category: 'Ambiance', description: 'Smallholder partners preparing cherries for the day’s selective harvest.' },
+    { id: 2, src: '/2.jpg', title: 'Processing In Motion', category: 'Coffee Art', description: 'Honey processed lots drying on raised beds with meticulous care.' },
+    { id: 3, src: '/3.jpg', title: 'Origin Profiles', category: 'Products', description: 'Hand-sorted heirloom beans destined for our global partners.' },
+    { id: 4, src: '/4.jpg', title: 'Cupping Lab Insights', category: 'Experience', description: 'Q graders evaluating new lots before export allocations.' },
   ];
 
   useEffect(() => {
@@ -111,7 +111,7 @@ const Gallery = () => {
     
     const shareData = {
       title: image.title,
-      text: `Check out this amazing photo from Woinu Coffee: ${image.title}`,
+      text: `Take a look at this WoinuCoffee origin moment: ${image.title}`,
       url: window.location.href,
     };
     
@@ -164,18 +164,18 @@ const Gallery = () => {
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 text-amber-600">
                 <div className="w-12 h-0.5 bg-amber-600"></div>
-                <span className="text-sm font-medium uppercase tracking-wider">Our Collection</span>
+                <span className="text-sm font-medium uppercase tracking-wider">Origin Stories</span>
               </div>
               
               <h1 className="text-5xl md:text-7xl font-bold text-gray-900 leading-tight">
-                Visual
+                Supply Chain
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-600">
                   Journey
                 </span>
               </h1>
               
               <p className="text-lg text-gray-600 leading-relaxed max-w-md">
-                Explore the heart and soul of Woinu Coffee through our carefully curated gallery. Every image tells a story of craftsmanship, tradition, and passion.
+                Trace Ethiopia’s coffees from farm to export. Each image captures the farmers, processing practices, and partnerships that shape WoinuCoffee lots.
               </p>
               
               <div className="flex items-center gap-8 pt-4">

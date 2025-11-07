@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { supabase } from '../lib/supabaseClient';
-import { Coffee, ShoppingCart } from 'lucide-react';
+import { Coffee } from 'lucide-react';
 
 const Menu = () => {
   const [categories, setCategories] = useState([]);
@@ -36,8 +36,8 @@ const Menu = () => {
 
       <div className="relative py-20" style={{background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 50%, #B8956A 100%)'}}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold mb-4 text-white">Our Menu</h1>
-          <p className="text-xl text-amber-100">Explore our delicious Ethiopian coffee and treats</p>
+          <h1 className="text-5xl font-bold mb-4 text-white">Export Catalog</h1>
+          <p className="text-xl text-amber-100">Discover Ethiopian green coffee lots prepared for global partners</p>
         </div>
       </div>
 
@@ -51,7 +51,7 @@ const Menu = () => {
             }`}
             style={selectedCategory === 'all' ? {background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'} : {}}
           >
-            All Items
+            All Lots
           </button>
           {categories.map((cat) => (
             <button
@@ -86,7 +86,9 @@ const Menu = () => {
                     <h3 className="text-xl font-bold text-coffee-900">{item.name}</h3>
                     <p className="text-sm text-amber-700">{item.categories?.name}</p>
                   </div>
-                  <span className="text-2xl font-bold" style={{color: '#D4A574'}}>${item.price}</span>
+                  <span className="text-2xl font-bold" style={{color: '#D4A574'}}>
+                    {typeof item.price === 'number' ? `$${Number(item.price).toFixed(2)}/lb` : item.price}
+                  </span>
                 </div>
                 <p className="text-amber-900 mb-4">{item.description}</p>
                 {item.ingredients && item.ingredients.length > 0 && (
@@ -96,7 +98,7 @@ const Menu = () => {
                 )}
                 <div className="mt-4 pt-4 border-t border-amber-200">
                   <p className="text-center text-sm text-amber-700 font-medium">
-                    Available at our coffee shop
+                    Available for booking this harvest
                   </p>
                 </div>
               </div>
@@ -106,7 +108,7 @@ const Menu = () => {
 
         {filteredItems.length === 0 && (
           <div className="text-center py-12 text-gray-500">
-            No items available in this category
+            No lots available in this category right now
           </div>
         )}
       </div>

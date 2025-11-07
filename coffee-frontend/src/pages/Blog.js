@@ -27,8 +27,8 @@ const Blog = () => {
 
       <div className="relative py-20" style={{background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 50%, #B8956A 100%)'}}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold mb-4 text-white">Blog</h1>
-          <p className="text-xl text-amber-100">Stories, Tips & Coffee Culture</p>
+          <h1 className="text-5xl font-bold mb-4 text-white">Origin Dispatches</h1>
+          <p className="text-xl text-amber-100">Insights on Ethiopian producers, sustainability, and global partnerships</p>
         </div>
       </div>
 

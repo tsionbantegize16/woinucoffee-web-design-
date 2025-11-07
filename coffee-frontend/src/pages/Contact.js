@@ -42,8 +42,8 @@ const Contact = () => {
 
       <div className="relative py-20" style={{background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 50%, #B8956A 100%)'}}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold mb-4 text-white">Contact Us</h1>
-          <p className="text-xl text-amber-100">We'd love to hear from you</p>
+          <h1 className="text-5xl font-bold mb-4 text-white">Let’s Shape Your Sourcing Plan</h1>
+          <p className="text-xl text-amber-100">Share your green coffee needs and we’ll craft a tailored Ethiopian offering</p>
         </div>
       </div>
 
@@ -51,16 +51,17 @@ const Contact = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Info */}
           <div>
-            <h2 className="text-3xl font-bold text-coffee-900 mb-6">Get in Touch</h2>
+            <h2 className="text-3xl font-bold text-coffee-900 mb-6">Connect With Our Export Team</h2>
             <div className="space-y-6">
               <div className="flex items-start space-x-4 p-4 rounded-xl bg-white shadow-soft border border-amber-200">
                 <div className="p-3 rounded-full" style={{background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'}}>
                   <MapPin className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg text-coffee-900">Address</h3>
+                  <h3 className="font-bold text-lg text-coffee-900">Head Office</h3>
                   <p className="text-amber-800">Nefas Silke, Woreda 01</p>
                   <p className="text-amber-800">Addis Ababa, Ethiopia</p>
+                  <p className="text-amber-600 text-sm mt-1">Origin lab, cupping studio & export coordination</p>
                 </div>
               </div>
 
@@ -70,7 +71,8 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg text-coffee-900">Phone</h3>
-                  <p className="text-amber-800">+251-XXX-XXX-XXX</p>
+                  <p className="text-amber-800">+251911204473</p>
+                  <p className="text-amber-600 text-sm mt-1">WhatsApp & Signal available for sourcing updates</p>
                 </div>
               </div>
 
@@ -80,7 +82,8 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg text-coffee-900">Email</h3>
-                  <p className="text-amber-800">contact@woinucoffee.com</p>
+                  <p className="text-amber-800">partnerships@woinucoffee.com</p>
+                  <p className="text-amber-600 text-sm mt-1">Detailed offers, contracts & logistics coordination</p>
                 </div>
               </div>
 
@@ -89,9 +92,10 @@ const Contact = () => {
                   <Clock className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg text-coffee-900">Opening Hours</h3>
-                  <p className="text-amber-800">Mon-Sat: 7:00 AM - 10:00 PM</p>
-                  <p className="text-amber-800">Sun: 8:00 AM - 9:00 PM</p>
+                  <h3 className="font-bold text-lg text-coffee-900">Working Hours</h3>
+                  <p className="text-amber-800">Mon–Fri: 8:30 AM - 6:00 PM (EAT)</p>
+                  <p className="text-amber-800">Sat: 9:00 AM - 1:00 PM (EAT)</p>
+                  <p className="text-amber-600 text-sm mt-1">Virtual cuppings available by appointment</p>
                 </div>
               </div>
             </div>
@@ -99,7 +103,7 @@ const Contact = () => {
 
           {/* Contact Form */}
           <div className="bg-white rounded-2xl shadow-soft p-8 border border-amber-200">
-            <h2 className="text-2xl font-bold text-coffee-900 mb-6">Send us a Message</h2>
+            <h2 className="text-2xl font-bold text-coffee-900 mb-6">Tell Us About Your Needs</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-coffee-900 mb-2">Name *</label>
@@ -165,7 +169,7 @@ const Contact = () => {
                 disabled={submitting}
                 className="w-full btn-primary py-3 text-lg disabled:opacity-50"
               >
-                {submitting ? 'Sending...' : 'Send Message'}
+                {submitting ? 'Sending...' : 'Submit Inquiry'}
               </button>
             </form>
           </div>
@@ -175,8 +179,8 @@ const Contact = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="bg-white rounded-2xl shadow-soft overflow-hidden border border-amber-200">
             <div className="p-8 text-center">
-              <h2 className="text-3xl font-bold text-coffee-900 mb-3">Visit Our Location</h2>
-              <p className="text-amber-800 mb-8">Find us at Nefas Silke, Woreda 01, Addis Ababa</p>
+              <h2 className="text-3xl font-bold text-coffee-900 mb-3">Visit Our Origin Lab</h2>
+              <p className="text-amber-800 mb-8">Cup new lots, review traceability data, and meet the team at Nefas Silke, Woreda 01, Addis Ababa</p>
             </div>
             <div className="relative w-full h-[450px] lg:h-[500px]">
               <iframe
@@ -200,7 +204,7 @@ const Contact = () => {
                 <div className="hidden sm:block w-px h-6 bg-amber-300"></div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-5 h-5 text-amber-600" />
-                  <span className="font-medium">Open Daily</span>
+                  <span className="font-medium">Open By Appointment</span>
                 </div>
                 <div className="hidden sm:block w-px h-6 bg-amber-300"></div>
                 <a 

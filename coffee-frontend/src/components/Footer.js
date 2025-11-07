@@ -21,11 +21,11 @@ const Footer = () => {
               <p className="text-sm" style={{color: '#D4A574'}}>ወይኑ ቡና</p>
             </div>
             <p className="text-amber-100 text-sm leading-relaxed">
-              From the birthplace of coffee to your cup. 
-              Authentic Ethiopian coffee experience rooted in tradition, served with global excellence.
+              Established in 2025, WoinuCoffee partners with smallholder farmers to export Ethiopia’s most distinctive coffees—
+              honoring heritage, advancing sustainability, and connecting origin to the world.
             </p>
             <p className="text-amber-200 text-xs mt-3 italic">
-              "ቡና ደቡብ ነው" - Coffee is culture
+              "ቡና ቦታ እንዲታወቅ ትርፋማ ነው" - Coffee thrives when its origin is known
             </p>
           </div>
 
@@ -48,11 +48,11 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-center space-x-2 text-amber-100">
                 <Phone className="w-5 h-5" style={{color: '#D4A574'}} />
-                <span>+251-XXX-XXX-XXX</span>
+                <span>+251911204473</span>
               </li>
               <li className="flex items-center space-x-2 text-amber-100">
                 <Mail className="w-5 h-5" style={{color: '#D4A574'}} />
-                <span>contact@woinucoffee.com</span>
+                <span>partnerships@woinucoffee.com</span>
               </li>
               <li className="flex items-start space-x-2 text-amber-100">
                 <MapPin className="w-5 h-5 mt-1" style={{color: '#D4A574'}} />
@@ -81,7 +81,7 @@ const Footer = () => {
         <div className="border-t mt-8 pt-6" style={{borderColor: '#D4A574'}}>
           <div className="flex flex-col md:flex-row justify-between items-center text-sm text-amber-100">
             <p className="mb-2 md:mb-0 flex items-center">
-              &copy; 2024 Woinu Coffee. Made with <Heart className="w-4 h-4 mx-1 text-red-500 fill-current" /> in Ethiopia
+              &copy; 2025 WoinuCoffee. Made with <Heart className="w-4 h-4 mx-1 text-red-500 fill-current" /> for Ethiopian growers and global partners
             </p>
             <p className="text-xs">
               <span style={{color: '#D4A574'}}>ከኢትዮጵያ ጋር በጣም ጥሩ ቡና</span>

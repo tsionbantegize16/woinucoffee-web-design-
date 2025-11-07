@@ -21,22 +21,22 @@ const About = () => {
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <div className="inline-block px-6 py-3 rounded-full bg-white/10 backdrop-blur-sm border border-amber-300/30 mb-6 animate-fade-in-up" style={{animationDelay: '0.1s'}}>
-            <span className="text-amber-200 text-sm font-medium">☕ Established 2014</span>
+            <span className="text-amber-200 text-sm font-medium">☕ Established 2025</span>
           </div>
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-            Where Coffee
+            Ethiopia’s Coffee
             <span className="block mt-2" style={{background: 'linear-gradient(135deg, #D4A574 0%, #FFD700 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>
-              Tells A Story
+              Ready For The World
             </span>
           </h1>
           <p className="text-xl md:text-2xl text-amber-100 max-w-3xl mx-auto mb-8 leading-relaxed animate-fade-in-up" style={{animationDelay: '0.3s'}}>
-            From the birthplace of coffee to your cup—a journey spanning 3,000 years of Ethiopian heritage, 
-            passion, and dedication to the perfect brew.
+            WoinuCoffee unites farmers, agronomists, and exporters to share Ethiopia’s heritage coffees with global partners—
+            empowering communities, protecting ecosystems, and showcasing the birthplace of coffee through transparent trade.
           </p>
           <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
             <Link to="/contact" className="px-8 py-4 rounded-full font-bold text-coffee-900 transition-all duration-300 hover:shadow-xl hover:scale-105 text-lg inline-flex items-center gap-2" style={{background: 'linear-gradient(135deg, #D4A574 0%, #FFD700 100%)'}}>
               <MapPin className="w-5 h-5" />
-              Visit Our Coffee House
+              Schedule A Sourcing Call
             </Link>
           </div>
         </div>
@@ -58,36 +58,36 @@ const About = () => {
                 <span className="text-sm font-semibold">OUR JOURNEY</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-coffee-900">
-                The Woinu Story
+                The WoinuCoffee Journey
               </h2>
               <p className="text-lg text-amber-900 leading-relaxed">
-                <strong style={{color: '#D4A574'}}>2014:</strong> Our story began in the heart of Addis Ababa with a simple dream—
-                to honor Ethiopia's 3,000-year coffee legacy and share it with the world. Woinu, meaning "gold" in Amharic, 
-                perfectly captures what Ethiopian coffee represents: precious, rare, and invaluable.
+                <strong style={{color: '#D4A574'}}>2025:</strong> A collective of Ethiopian agronomists, exporters, and farmer leaders launched WoinuCoffee to reimagine
+                what transparent, impact-driven coffee trade can be. “Woinu” means “of the vine” and “precious” in Amharic—reflecting
+                both the coffee plant and the livelihoods we steward.
               </p>
               <p className="text-lg text-amber-900 leading-relaxed">
-                From a small coffee ceremony gathering among friends to becoming one of Addis Ababa's most beloved coffee destinations, 
-                our journey has been fueled by passion, authenticity, and an unwavering commitment to excellence.
+                We began with a small network of partners in Sidama and Yirgacheffe, providing farmgate financing, harvest planning,
+                and quality control to bring Ethiopia’s most distinct flavor profiles to global roasters. Today, our export programs
+                span washed, natural, and honey processes with full traceability and impact reporting.
               </p>
               <p className="text-lg text-amber-900 leading-relaxed">
-                We work directly with farmers in the highlands of Sidamo, Yirgacheffe, and Harar—regions renowned for producing 
-                some of the world's finest coffee. Every bean is hand-selected, every roast is perfected, and every cup is 
-                crafted with the reverence it deserves.
+                Every contract we sign includes climate-resilience training, soil regeneration projects, and gender-inclusive
+                leadership opportunities—ensuring Ethiopian coffee remains a source of pride and prosperity for generations to come.
               </p>
               <div className="flex items-center gap-4 pt-4">
                 <div className="text-center">
-                  <div className="text-4xl font-bold" style={{color: '#D4A574'}}>10</div>
-                  <div className="text-sm text-coffee-800">Years Excellence</div>
+                  <div className="text-4xl font-bold" style={{color: '#D4A574'}}>30+</div>
+                  <div className="text-sm text-coffee-800">Sourcing Cooperatives</div>
                 </div>
                 <div className="h-12 w-px bg-amber-300"></div>
                 <div className="text-center">
-                  <div className="text-4xl font-bold" style={{color: '#D4A574'}}>15+</div>
-                  <div className="text-sm text-coffee-800">Partner Farmers</div>
+                  <div className="text-4xl font-bold" style={{color: '#D4A574'}}>18</div>
+                  <div className="text-sm text-coffee-800">Origin Profiles</div>
                 </div>
                 <div className="h-12 w-px bg-amber-300"></div>
                 <div className="text-center">
-                  <div className="text-4xl font-bold" style={{color: '#D4A574'}}>50k+</div>
-                  <div className="text-sm text-coffee-800">Cups Served</div>
+                  <div className="text-4xl font-bold" style={{color: '#D4A574'}}>12k+</div>
+                  <div className="text-sm text-coffee-800">Bags Exported</div>
                 </div>
               </div>
             </div>
@@ -98,8 +98,8 @@ const About = () => {
                 className="rounded-3xl shadow-2xl w-full h-[600px] object-cover transform hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute -bottom-6 -left-6 px-8 py-6 bg-white rounded-2xl shadow-2xl border-4" style={{borderColor: '#D4A574'}}>
-                <p className="text-coffee-900 font-bold text-2xl">5,000+</p>
-                <p className="text-sm" style={{color: '#D4A574'}}>Happy Customers</p>
+                <p className="text-coffee-900 font-bold text-2xl">48</p>
+                <p className="text-sm" style={{color: '#D4A574'}}>Impact Reports Delivered</p>
               </div>
             </div>
           </div>
@@ -124,22 +124,22 @@ const About = () => {
               </div>
               <h3 className="text-3xl font-bold text-coffee-900 mb-4">Our Mission</h3>
               <p className="text-lg text-amber-900 leading-relaxed mb-6">
-                To preserve and celebrate Ethiopian coffee heritage while creating exceptional experiences that connect 
-                people, honor tradition, and support farming communities. Every cup we serve is a bridge between 
-                Ethiopia's ancient coffee culture and the modern world.
+                At WoinuCoffee, our mission is to deliver the finest Ethiopian coffee to global markets by combining tradition,
+                quality, and sustainability. We work hand-in-hand with local farmers to ensure fair trade, preserve Ethiopia’s coffee heritage,
+                and provide our customers with an authentic, premium coffee experience from bean to cup.
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <Coffee className="w-5 h-5 mr-3 mt-1" style={{color: '#D4A574'}} />
-                  <span className="text-amber-900">Source 100% Ethiopian specialty-grade beans</span>
+                  <span className="text-amber-900">Co-create export plans alongside farmer partners</span>
                 </li>
                 <li className="flex items-start">
                   <Heart className="w-5 h-5 mr-3 mt-1" style={{color: '#D4A574'}} />
-                  <span className="text-amber-900">Support fair trade and sustainable farming</span>
+                  <span className="text-amber-900">Champion fair trade, regenerative agriculture, and equitable profit-sharing</span>
                 </li>
                 <li className="flex items-start">
                   <Star className="w-5 h-5 mr-3 mt-1" style={{color: '#D4A574'}} />
-                  <span className="text-amber-900">Craft every cup with excellence and care</span>
+                  <span className="text-amber-900">Deliver curated, quality-assured lots to partners worldwide</span>
                 </li>
               </ul>
             </div>
@@ -151,22 +151,22 @@ const About = () => {
               </div>
               <h3 className="text-3xl font-bold text-white mb-4">Our Vision</h3>
               <p className="text-lg text-amber-100 leading-relaxed mb-6">
-                To become the world's ambassador for Ethiopian coffee—sharing its unparalleled quality, rich history, 
-                and cultural significance with every community we touch. We envision a future where Ethiopian coffee 
-                is celebrated globally for its authenticity and excellence.
+                WoinuCoffee is striving to be Ethiopia’s leading coffee exporter, sharing the rich heritage, unique flavors, and exceptional
+                quality of Ethiopian coffee with the world—while empowering local farmers, promoting sustainable practices, and elevating
+                Ethiopia’s global reputation as the birthplace of coffee.
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <Globe className="w-5 h-5 mr-3 mt-1" style={{color: '#FFD700'}} />
-                  <span className="text-amber-100">Expand Ethiopian coffee culture worldwide</span>
+                  <span className="text-amber-100">Elevate Ethiopia’s coffee reputation in every market we reach</span>
                 </li>
                 <li className="flex items-start">
                   <Users className="w-5 h-5 mr-3 mt-1" style={{color: '#FFD700'}} />
-                  <span className="text-amber-100">Build thriving coffee communities</span>
+                  <span className="text-amber-100">Empower thriving farming communities through direct trade</span>
                 </li>
                 <li className="flex items-start">
                   <Leaf className="w-5 h-5 mr-3 mt-1" style={{color: '#FFD700'}} />
-                  <span className="text-amber-100">Pioneer sustainable coffee practices</span>
+                  <span className="text-amber-100">Advance sustainable practices that protect Ethiopia’s coffee forests</span>
                 </li>
               </ul>
             </div>
@@ -190,25 +190,25 @@ const About = () => {
               { 
                 icon: Coffee, 
                 title: 'Authenticity', 
-                desc: 'True to our Ethiopian roots, we honor tradition while embracing innovation. No shortcuts, no compromises.',
+                desc: 'Every lot is traceable to the farm, celebrating Ethiopia’s heritage while meeting modern quality standards.',
                 color: '#D4A574'
               },
               { 
                 icon: Heart, 
                 title: 'Passion', 
-                desc: 'Coffee is our art, our craft, our love. Every bean tells a story, and we pour our hearts into sharing it.',
+                desc: 'We champion farmer voices, the craft of processing, and the global communities that share in Ethiopian coffee.',
                 color: '#C19A6B'
               },
               { 
                 icon: Users, 
                 title: 'Community', 
-                desc: 'From farmers to customers, we build meaningful relationships that strengthen everyone in the coffee chain.',
+                desc: 'Partnerships that prioritize co-creation, equitable value, and lasting social impact across the supply chain.',
                 color: '#B8956A'
               },
               { 
                 icon: Award, 
                 title: 'Excellence', 
-                desc: 'We pursue perfection in every detail—from bean selection to the final pour, quality is non-negotiable.',
+                desc: 'Rigorous quality control, data-driven logistics, and Q-certified cupping ensure every shipment exceeds expectations.',
                 color: '#D4A574'
               },
             ].map((value, idx) => (
@@ -241,17 +241,17 @@ const About = () => {
             <div className="inline-block px-4 py-2 rounded-full border-2 mb-4" style={{borderColor: '#D4A574', color: '#D4A574'}}>
               <span className="text-sm font-semibold">OUR JOURNEY</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-coffee-900 mb-4">A Decade of Excellence</h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-coffee-900 mb-4">Milestones Of Impact</h2>
           </div>
 
           <div className="space-y-12">
             {[
-              { year: '2014', title: 'The Beginning', desc: 'Woinu Coffee opens its doors in Addis Ababa with a small team and big dreams.' },
-              { year: '2016', title: 'Direct Trade Partnerships', desc: 'Established direct relationships with 10+ farming families in Yirgacheffe and Sidamo.' },
-              { year: '2018', title: 'National Recognition', desc: 'Awarded "Best Ethiopian Coffee Experience" by the National Tourism Board.' },
-              { year: '2020', title: 'Community Impact', desc: 'Launched fair trade initiative supporting over 50 farming families and their communities.' },
-              { year: '2022', title: 'Expansion & Innovation', desc: 'Introduced specialty roasting techniques while maintaining traditional coffee ceremony.' },
-              { year: '2024', title: 'Looking Forward', desc: 'Celebrating 10 years and expanding to share Ethiopian coffee culture globally.' },
+              { year: '2025', title: 'Collective Founded', desc: 'WoinuCoffee launches as an export collective uniting agronomists, traders, and farmer leaders across Sidama and Yirgacheffe.' },
+              { year: '2025', title: 'Farmer Empowerment Fund', desc: 'Created pre-harvest financing and agronomy support for 600+ smallholder families preparing export-ready lots.' },
+              { year: '2026', title: 'First Global Shipments', desc: 'Delivered washed and natural microlots to partners in Europe, Asia, and North America with full traceability.' },
+              { year: '2026', title: 'Sustainability Milestones', desc: 'Installed solar dryers, water recycling, and climate-resilient seedlings across partner washing stations.' },
+              { year: '2027', title: 'Impact Lab Opens', desc: 'Established Addis Ababa cupping lab to provide quality training, sensory data, and community cupping sessions.' },
+              { year: '2028', title: 'Scaling Origin Programs', desc: 'Expanded to Kaffa and Bench Sheko, introducing agroforestry initiatives and women-led cooperative leadership training.' },
             ].map((milestone, idx) => (
               <div key={idx} className="flex gap-8 group">
                 <div className="flex-shrink-0 text-right w-24">
@@ -278,10 +278,10 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { number: '10+', label: 'Years of Excellence', icon: Clock },
-              { number: '50k+', label: 'Cups Served', icon: Coffee },
-              { number: '5k+', label: 'Happy Customers', icon: Heart },
-              { number: '15+', label: 'Partner Farms', icon: Leaf },
+              { number: '600+', label: 'Producer Families Supported', icon: Users },
+              { number: '18', label: 'Origin Profiles Catalogued', icon: Coffee },
+              { number: '120', label: 'Annual Shipments Delivered', icon: Globe },
+              { number: '12', label: 'Regenerative Projects Active', icon: Leaf },
             ].map((stat, idx) => (
               <div key={idx} className="text-center p-6 rounded-2xl bg-gradient-to-br from-amber-50 to-white hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
                 <stat.icon className="w-12 h-12 mx-auto mb-4" style={{color: '#D4A574'}} />
@@ -297,19 +297,19 @@ const About = () => {
       <section className="py-20 bg-gradient-to-r from-coffee-900 via-coffee-800 to-coffee-900">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Experience The Woinu Difference
+            Partner With WoinuCoffee
           </h2>
           <p className="text-xl text-amber-100 mb-8 leading-relaxed">
-            Join us at our coffee house in Addis Ababa and taste the authentic heritage of Ethiopian coffee. 
-            Every visit is a journey through 3,000 years of tradition.
+            Collaborate with us on sourcing plans, cup our latest lots, and co-create impact for the farmers who steward Ethiopia’s
+            legendary coffee landscapes.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/contact" className="px-8 py-4 rounded-full font-bold text-coffee-900 transition-all duration-300 hover:shadow-xl hover:scale-105 text-lg inline-flex items-center gap-2" style={{background: 'linear-gradient(135deg, #D4A574 0%, #FFD700 100%)'}}>
               <MapPin className="w-5 h-5" />
-              Visit Us Today
+              Book A Sourcing Call
             </Link>
             <Link to="/menu" className="px-8 py-4 rounded-full font-bold border-2 border-amber-300 text-white hover:bg-white/10 transition-all duration-300 text-lg inline-flex items-center gap-2">
-              Explore Our Menu <ArrowRight className="w-5 h-5" />
+              Request Sample Set <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
         </div>

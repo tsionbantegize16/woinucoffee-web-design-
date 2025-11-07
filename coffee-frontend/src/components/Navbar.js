@@ -28,7 +28,7 @@ const Navbar = () => {
               <span className="text-2xl font-bold text-coffee-900">Woinu Coffee</span>
               <p className="text-xs" style={{color: '#D4A574'}}>ወይኑ ቡና • Ethiopian Coffee</p>
               <p className="text-sm font-semibold mt-1" style={{color: '#D4A574'}}>
-                Discover The Art Of Perfect Coffee
+                Exporting Ethiopia's Finest Coffee
               </p>
             </div>
           </Link>
