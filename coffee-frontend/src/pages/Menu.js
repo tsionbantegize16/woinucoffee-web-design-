@@ -5,6 +5,9 @@ import { supabase } from '../lib/supabaseClient';
 import { Coffee } from 'lucide-react';
 
 const Menu = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [categories, setCategories] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');

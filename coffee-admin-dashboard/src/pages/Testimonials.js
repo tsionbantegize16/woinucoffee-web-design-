@@ -5,10 +5,15 @@ import toast, { Toaster } from 'react-hot-toast';
 import TestimonialForm from '../components/TestimonialForm';
 
 const Testimonials = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [selectedTestimonial, setSelectedTestimonial] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [testimonialToDelete, setTestimonialToDelete] = useState(null);
 
   useEffect(() => {
     fetchTestimonials();
@@ -29,12 +34,19 @@ const Testimonials = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Delete this testimonial?')) return;
+  const handleDelete = (testimonial) => {
+    setTestimonialToDelete(testimonial);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!testimonialToDelete) return;
     try {
-      const { error } = await supabase.from('testimonials').delete().eq('id', id);
+      const { error } = await supabase.from('testimonials').delete().eq('id', testimonialToDelete.id);
       if (error) throw error;
       toast.success('Testimonial deleted!');
+      setShowDeleteModal(false);
+      setTestimonialToDelete(null);
       fetchTestimonials();
     } catch (error) {
       toast.error('Failed to delete');
@@ -227,14 +239,18 @@ const Testimonials = () => {
                   {testimonial.is_approved ? 'Hide' : 'Approve'}
                 </button>
                 <button
+                  type="button"
                   onClick={() => handleEdit(testimonial)}
-                  className="px-4 py-2 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-lg font-medium text-sm transition-colors"
+                  className="btn-icon btn-icon-secondary"
+                  aria-label={`Edit testimonial from ${testimonial.customer_name}`}
                 >
                   <Edit className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={() => handleDelete(testimonial.id)}
-                  className="px-4 py-2 bg-red-100 text-red-700 hover:bg-red-200 rounded-lg font-medium text-sm transition-colors"
+                  type="button"
+                  onClick={() => handleDelete(testimonial)}
+                  className="btn-icon btn-icon-danger"
+                  aria-label={`Delete testimonial from ${testimonial.customer_name}`}
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -265,6 +281,61 @@ const Testimonials = () => {
           onClose={handleCloseForm}
           onSuccess={handleFormSuccess}
         />
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl transform transition-all">
+            <div className="text-center">
+              {/* Animated Icon */}
+              <div className="w-20 h-20 bg-gradient-to-br from-red-50 to-red-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+                <Trash2 className="w-10 h-10 text-red-500" />
+              </div>
+              
+              {/* Title */}
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Delete Testimonial</h3>
+              
+              {/* Description */}
+              <p className="text-gray-600 mb-2">
+                Are you sure you want to delete this customer testimonial?
+              </p>
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
+                <p className="font-semibold text-amber-900 text-lg">{testimonialToDelete?.customer_name}</p>
+                {testimonialToDelete?.rating && (
+                  <div className="flex items-center justify-center gap-1 mt-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className={`w-4 h-4 ${i < testimonialToDelete.rating ? 'fill-amber-400 text-amber-400' : 'text-gray-300'}`} />
+                    ))}
+                  </div>
+                )}
+              </div>
+              <p className="text-sm text-gray-500 mb-8">
+                This action cannot be undone. The testimonial will be permanently removed from your website.
+              </p>
+              
+              {/* Buttons */}
+              <div className="flex gap-4">
+                <button
+                  onClick={() => {
+                    setShowDeleteModal(false);
+                    setTestimonialToDelete(null);
+                  }}
+                  className="btn btn-outline flex-1 py-3 px-4"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmDelete}
+                  className="btn btn-danger flex-1 py-3 px-4 inline-flex items-center justify-center gap-2"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Delete Testimonial
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

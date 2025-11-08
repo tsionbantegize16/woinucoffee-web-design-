@@ -5,10 +5,15 @@ import toast, { Toaster } from 'react-hot-toast';
 import BlogPostForm from '../components/BlogPostForm';
 
 const BlogPosts = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [postToDelete, setPostToDelete] = useState(null);
 
   useEffect(() => {
     fetchPosts();
@@ -26,12 +31,19 @@ const BlogPosts = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Delete this post?')) return;
+  const handleDelete = (post) => {
+    setPostToDelete(post);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!postToDelete) return;
     try {
-      const { error } = await supabase.from('blog_posts').delete().eq('id', id);
+      const { error } = await supabase.from('blog_posts').delete().eq('id', postToDelete.id);
       if (error) throw error;
       toast.success('Post deleted!');
+      setShowDeleteModal(false);
+      setPostToDelete(null);
       fetchPosts();
     } catch (error) {
       toast.error('Failed to delete');
@@ -205,15 +217,18 @@ const BlogPosts = () => {
               {/* Actions */}
               <div className="flex gap-2 pt-4 border-t">
                 <button
+                  type="button"
                   onClick={() => handleEditPost(post)}
-                  className="flex-1 py-2 px-3 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-1"
+                  className="btn-icon btn-icon-secondary"
+                  aria-label={`Edit ${post.title}`}
                 >
                   <Edit className="w-4 h-4" />
-                  Edit
                 </button>
                 <button
-                  onClick={() => handleDelete(post.id)}
-                  className="px-4 py-2 bg-red-100 text-red-700 hover:bg-red-200 rounded-lg font-medium text-sm transition-colors"
+                  type="button"
+                  onClick={() => handleDelete(post)}
+                  className="btn-icon btn-icon-danger"
+                  aria-label={`Delete ${post.title}`}
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -243,6 +258,59 @@ const BlogPosts = () => {
           onClose={handleCloseForm}
           onSuccess={handleFormSuccess}
         />
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl transform transition-all">
+            <div className="text-center">
+              {/* Animated Icon */}
+              <div className="w-20 h-20 bg-gradient-to-br from-red-50 to-red-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+                <Trash2 className="w-10 h-10 text-red-500" />
+              </div>
+              
+              {/* Title */}
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Delete Blog Post</h3>
+              
+              {/* Description */}
+              <p className="text-gray-600 mb-2">
+                Are you sure you want to delete this blog post?
+              </p>
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
+                <p className="font-semibold text-amber-900 text-lg">{postToDelete?.title}</p>
+                {postToDelete?.created_at && (
+                  <p className="text-amber-700 text-sm mt-1">
+                    Published: {new Date(postToDelete.created_at).toLocaleDateString()}
+                  </p>
+                )}
+              </div>
+              <p className="text-sm text-gray-500 mb-8">
+                This action cannot be undone. The blog post will be permanently removed from your website.
+              </p>
+              
+              {/* Buttons */}
+              <div className="flex gap-4">
+                <button
+                  onClick={() => {
+                    setShowDeleteModal(false);
+                    setPostToDelete(null);
+                  }}
+                  className="btn btn-outline flex-1 py-3 px-4"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmDelete}
+                  className="btn btn-danger flex-1 py-3 px-4 inline-flex items-center justify-center gap-2"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Delete Post
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

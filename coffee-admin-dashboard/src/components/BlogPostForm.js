@@ -290,14 +290,14 @@ const BlogPostForm = ({ post = null, onClose, onSuccess }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="btn-outline"
               disabled={loading || uploading}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="btn-primary px-6 py-2"
+              className="btn-primary"
               disabled={loading || uploading}
             >
               {loading ? 'Saving...' : uploading ? 'Uploading...' : post ? 'Update Post' : 'Create Post'}

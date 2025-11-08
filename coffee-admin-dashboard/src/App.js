@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
+import ScrollToTop from './components/ScrollToTop';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import MenuItems from './pages/MenuItems';
@@ -16,6 +17,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <ScrollToTop behavior="smooth" />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route

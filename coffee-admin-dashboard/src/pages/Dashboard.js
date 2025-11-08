@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { Coffee, ShoppingCart, MessageSquare, TrendingUp, Star, Image as ImageIcon, Clock, CheckCircle, AlertCircle, Package, DollarSign } from 'lucide-react';
+import { Coffee, MessageSquare, TrendingUp, Clock, CheckCircle, AlertCircle, Mail } from 'lucide-react';
 
 const Dashboard = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [stats, setStats] = useState({
-    totalOrders: 0,
-    totalRevenue: 0,
     totalMenuItems: 0,
     totalCategories: 0,
-    pendingOrders: 0,
-    todayOrders: 0,
+    totalMessages: 0,
+    unreadMessages: 0,
   });
-  const [recentOrders, setRecentOrders] = useState([]);
+  const [recentMessages, setRecentMessages] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,35 +26,62 @@ const Dashboard = () => {
       // Get today's date
       const today = new Date().toISOString().split('T')[0];
       
-      // Fetch stats
-      const [ordersRes, menuItemsRes, categoriesRes, todayOrdersRes, pendingOrdersRes] = await Promise.all([
-        supabase.from('orders').select('total_amount').eq('status', 'completed'),
+      console.log('Starting dashboard data fetch...');
+      
+      // Fetch stats with error handling for each table
+      const [
+        menuItemsRes, 
+        categoriesRes, 
+        messagesRes, 
+        unreadMessagesRes
+      ] = await Promise.allSettled([
         supabase.from('menu_items').select('id'),
         supabase.from('categories').select('id'),
-        supabase.from('orders').select('*').gte('created_at', today),
-        supabase.from('orders').select('*').eq('status', 'pending'),
+        supabase.from('contact_messages').select('id'),
+        supabase.from('contact_messages').select('id').eq('is_read', false),
       ]);
 
-      // Calculate stats
-      const totalRevenue = ordersRes.data?.reduce((sum, order) => sum + (order.total_amount || 0), 0) || 0;
-      
-      setStats({
-        totalOrders: ordersRes.data?.length || 0,
-        totalRevenue,
-        totalMenuItems: menuItemsRes.data?.length || 0,
-        totalCategories: categoriesRes.data?.length || 0,
-        pendingOrders: pendingOrdersRes.data?.length || 0,
-        todayOrders: todayOrdersRes.data?.length || 0,
+      // Log results for debugging
+      console.log('Dashboard fetch results:', {
+        menuItems: menuItemsRes.status,
+        categories: categoriesRes.status,
+        messages: messagesRes.status,
+        unreadMessages: unreadMessagesRes.status,
       });
 
-      // Fetch recent orders
-      const { data: ordersData } = await supabase
-        .from('orders')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(5);
+      // Extract data safely
+      const menuItemsData = menuItemsRes.status === 'fulfilled' ? menuItemsRes.value : { data: [], error: menuItemsRes.reason };
+      const categoriesData = categoriesRes.status === 'fulfilled' ? categoriesRes.value : { data: [], error: categoriesRes.reason };
+      const messagesData = messagesRes.status === 'fulfilled' ? messagesRes.value : { data: [], error: messagesRes.reason };
+      const unreadMessagesData = unreadMessagesRes.status === 'fulfilled' ? unreadMessagesRes.value : { data: [], error: unreadMessagesRes.reason };
 
-      setRecentOrders(ordersData || []);
+      // Log any errors
+      if (menuItemsData.error) console.error('Menu items error:', menuItemsData.error);
+      if (categoriesData.error) console.error('Categories error:', categoriesData.error);
+      if (messagesData.error) console.error('Messages error:', messagesData.error);
+      
+      setStats({
+        totalMenuItems: menuItemsData.data?.length || 0,
+        totalCategories: categoriesData.data?.length || 0,
+        totalMessages: messagesData.data?.length || 0,
+        unreadMessages: unreadMessagesData.data?.length || 0,
+      });
+
+      // Fetch recent messages with error handling
+      const recentMessagesResult = await Promise.allSettled([
+        supabase.from('contact_messages').select('*').order('created_at', { ascending: false }).limit(5)
+      ]);
+
+      const recentMessagesData = recentMessagesResult[0].status === 'fulfilled' 
+        ? recentMessagesResult[0].value 
+        : { data: [], error: recentMessagesResult[0].reason };
+
+      if (recentMessagesData.error) {
+        console.error('Recent messages error:', recentMessagesData.error);
+      }
+
+      setRecentMessages(recentMessagesData.data || []);
+      console.log('Dashboard data loaded successfully');
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
     } finally {
@@ -61,29 +89,13 @@ const Dashboard = () => {
     }
   };
 
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'completed':
-        return <CheckCircle className="w-4 h-4 text-amber-600" />;
-      case 'pending':
-        return <Clock className="w-4 h-4 text-yellow-600" />;
-      case 'cancelled':
-        return <AlertCircle className="w-4 h-4 text-coffee-800" />;
-      default:
-        return <Clock className="w-4 h-4 text-amber-600" />;
+  const markAsRead = async (id) => {
+    try {
+      await supabase.from('contact_messages').update({ is_read: true }).eq('id', id);
+      fetchDashboardData();
+    } catch (error) {
+      console.error('Error marking message as read:', error);
     }
-  };
-
-  const getStatusBadge = (status) => {
-    const badges = {
-      completed: 'badge-success',
-      pending: 'badge-warning',
-      cancelled: 'badge-danger',
-      confirmed: 'badge-info',
-      preparing: 'badge-warning',
-      ready: 'badge-success',
-    };
-    return badges[status] || 'badge-info';
   };
 
   if (loading) {
@@ -105,114 +117,102 @@ const Dashboard = () => {
       </div>
 
       {/* Enhanced Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="stat-card group hover:scale-105">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 text-white rounded-xl group-hover:shadow-soft Transition-all" style={{background: 'linear-gradient(135deg, #D4A574 0%, # c19A6B 100%)'}}>
-              <ShoppingCart className="w-6 h-6" />
-            </div>
-            <TrendingUp className="w-4 h-4 text-amber-600" />
-          </div>
-          <p className="text-sm font-medium text-coffee-700 mb-1">Total Orders</p>
-          <p className="text-2xl font-bold text-coffee-900">{stats.totalOrders}</p>
-        </div>
-
-        <div className="stat-card group hover:scale-105">
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-3 text-coffee-800 rounded-xl group-hover:shadow-soft Transition-all border-2 border-amber-400" style={{background: 'linear-gradient(135deg, #FFF8E2 0%, #F5E2D3 100%)'}}>
-              <DollarSign className="w-6 h-6" />
-            </div>
-            <TrendingUp className="w-4 h-4 text-amber-600" />
-          </div>
-          <p className="text-sm font-medium text-coffee-700 mb-1">Revenue</p>
-          <p className="text-2xl font-bold text-coffee-900">${stats.totalRevenue.toFixed(2)}</p>
-        </div>
-
-        <div className="stat-card group hover:scale-105">
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-3 text-white rounded-xl group-hover:shadow-soft Transition-all" style={{background: 'linear-gradient(135deg, #D4A574 0%, # c19A6B 100%)'}}>
+            <div className="p-3 text-white rounded-xl group-hover:shadow-soft transition-all" style={{background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'}}>
               <Coffee className="w-6 h-6" />
             </div>
-            <Package className="w-4 h-4 text-amber-600" />
+            <TrendingUp className="w-4 h-4 text-amber-600" />
           </div>
-          <p className="text-sm font-medium text-coffee-900 mb-1">Menu Items</p>
+          <p className="text-sm font-medium text-coffee-700 mb-1">Menu Items</p>
           <p className="text-2xl font-bold text-coffee-900">{stats.totalMenuItems}</p>
         </div>
 
         <div className="stat-card group hover:scale-105">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 text-coffee-800 rounded-xl Group-hover:shadow-soft Transition-all border-2 border-amber-500" style={{background: 'linear-gradient(135deg, #FFF8E2 0%, #F5E2D$ 100%)'}}>
-              <Package className="w-6 h-6" />
+            <div className="p-3 text-coffee-800 rounded-xl group-hover:shadow-soft transition-all border-2 border-amber-400" style={{background: 'linear-gradient(135deg, #FFF8E2 0%, #F5E2D3 100%)'}}>
+              <MessageSquare className="w-6 h-6" />
             </div>
-            <div className="w-4 h-4 rounded-full bg-amber-600"></div>
+            <Mail className="w-4 h-4 text-amber-600" />
+          </div>
+          <p className="text-sm font-medium text-coffee-700 mb-1">Total Messages</p>
+          <p className="text-2xl font-bold text-coffee-900">{stats.totalMessages}</p>
+        </div>
+
+        <div className="stat-card group hover:scale-105">
+          <div className="flex items-center justify-between mb-4">
+            <div className="p-3 text-amber-700 rounded-xl group-hover:shadow-soft transition-all border-2 border-amber-500" style={{background: 'linear-gradient(135deg, #FDF8F3 0%, #F0DCC7 100%)'}}>
+              <Mail className="w-6 h-6" />
+            </div>
+            <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
+          </div>
+          <p className="text-sm font-medium text-coffee-900 mb-1">Unread Messages</p>
+          <p className="text-2xl font-bold text-coffee-900">{stats.unreadMessages}</p>
+        </div>
+
+        <div className="stat-card group hover:scale-105">
+          <div className="flex items-center justify-between mb-4">
+            <div className="p-3 text-white rounded-xl group-hover:shadow-soft transition-all" style={{background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)'}}>
+              <MessageSquare className="w-6 h-6" />
+            </div>
+            <TrendingUp className="w-4 h-4 text-amber-600" />
           </div>
           <p className="text-sm font-medium text-coffee-900 mb-1">Categories</p>
           <p className="text-2xl font-bold text-coffee-900">{stats.totalCategories}</p>
         </div>
-
-        <div className="stat-card group hover:scale-105">
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-3 text-amber-700 rounded-xl Group-hover:shadow-soft Transition-all border-2 border-amber-500" style={{background: 'linear-gradient(135deg, #FDF8F3 0%, #F0DCC7 100%)'}}>
-              <Clock className="w-6 h-6" />
-            </div>
-            <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
-          </div>
-          <p className="text-sm font-medium text-coffee-900 mb-1">Pending</p>
-          <p className="text-2xl font-bold text-coffee-900">{stats.pendingOrders}</p>
-        </div>
-
-        <div className="stat-card group hover:scale-105">
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-3 text-white rounded-xl Group-hover:shadow-soft Transition-all" style={{background: 'linear-gradient(135deg, #D4A574 0%, # c19A6B 100%)'}}>
-              <TrendingUp className="w-6 h-6" />
-            </div>
-            <TrendingUp className="w-4 h-4 text-amber-600" />
-          </div>
-          <p className="text-sm font-medium text-coffee-900 mb-1">Today</p>
-          <p className="text-2xl font-bold text-coffee-900">{stats.todayOrders}</p>
-        </div>
       </div>
 
-      {/* Recent Orders with Enhanced Design */}
+      {/* Recent Messages with Enhanced Design */}
       <div className="card">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-coffee-900">Recent Orders</h2>
-            <p className="text-sm text-coffee-600">Latest customer orders</p>
+            <h2 className="text-2xl font-bold text-coffee-900">Recent Messages</h2>
+            <p className="text-sm text-coffee-600">Latest contact inquiries</p>
           </div>
         </div>
         
-        {recentOrders.length > 0 ? (
+        {recentMessages.length > 0 ? (
           <div className="space-y-3">
-            {recentOrders.map((order, index) => (
+            {recentMessages.map((message, index) => (
               <div 
-                key={order.id} 
-                className="table-row bg-gradient-to-r from-coffee-50 to-white rounded-xl p-4 border border-coffee-100 hover:shadow-soft animate-slide-up"
+                key={message.id} 
+                className={`table-row bg-gradient-to-r ${!message.is_read ? 'from-amber-50 to-yellow-50' : 'from-coffee-50 to-white'} rounded-xl p-4 border ${!message.is_read ? 'border-amber-200' : 'border-coffee-100'} hover:shadow-soft animate-slide-up`}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <div className="p-2 bg-white rounded-lg shadow-soft">
-                      <ShoppingCart className="w-5 h-5 text-amber-500" />
+                      <Mail className="w-5 h-5 text-amber-500" />
                     </div>
                     <div>
-                      <p className="font-semibold text-coffee-900">Order #{order.order_number}</p>
-                      <p className="text-sm text-coffee-600">{order.customer_name}</p>
-                      <p className="text-xs text-coffee-500">{order.customer_phone}</p>
+                      <p className="font-semibold text-coffee-900">{message.name}</p>
+                      <p className="text-sm text-coffee-600">{message.email}</p>
+                      <p className="text-xs text-coffee-500">{message.subject || 'No subject'}</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-6">
                     <div className="text-right">
-                      <p className="font-bold text-lg text-coffee-900">${order.total_amount}</p>
                       <p className="text-xs text-coffee-500">
-                        {new Date(order.created_at).toLocaleDateString()}
+                        {new Date(message.created_at).toLocaleDateString()}
                       </p>
                     </div>
                     <div className="flex items-center space-x-2">
-                      {getStatusIcon(order.status)}
-                      <span className={`text-xs font-semibold ${getStatusBadge(order.status)}`}>
-                        {order.status}
-                      </span>
+                      {!message.is_read && (
+                        <button 
+                          onClick={() => markAsRead(message.id)}
+                          className="btn btn-primary py-2 px-4 text-sm inline-flex items-center gap-2"
+                        >
+                          <CheckCircle className="w-4 h-4" />
+                          Mark Read
+                        </button>
+                      )}
+                      {message.is_read && (
+                        <span className="text-xs text-green-600 font-semibold inline-flex items-center gap-1">
+                          <CheckCircle className="w-4 h-4" />
+                          Read
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -221,11 +221,9 @@ const Dashboard = () => {
           </div>
         ) : (
           <div className="text-center py-12">
-            <div className="w-16 h-16 bg-coffee-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <ShoppingCart className="w-8 h-8 text-coffee-400" />
-            </div>
-            <p className="text-coffee-600 font-medium">No orders yet</p>
-            <p className="text-sm text-coffee-500 mt-1">Your first order will appear here</p>
+            <Mail className="w-16 h-16 text-amber-300 mx-auto mb-4" />
+            <p className="text-coffee-600 font-medium">No messages yet</p>
+            <p className="text-sm text-coffee-500">Contact form submissions will appear here</p>
           </div>
         )}
       </div>

@@ -34,17 +34,10 @@ const About = () => {
             empowering communities, protecting ecosystems, and showcasing the birthplace of coffee through transparent trade.
           </p>
           <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
-            <Link to="/contact" className="px-8 py-4 rounded-full font-bold text-coffee-900 transition-all duration-300 hover:shadow-xl hover:scale-105 text-lg inline-flex items-center gap-2" style={{background: 'linear-gradient(135deg, #D4A574 0%, #FFD700 100%)'}}>
+            <Link to="/contact" className="btn btn-primary py-3 text-lg inline-flex items-center gap-2">
               <MapPin className="w-5 h-5" />
               Schedule A Sourcing Call
             </Link>
-          </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-8 h-12 rounded-full border-2 border-amber-300/50 flex items-start justify-center p-2">
-            <div className="w-1 h-3 rounded-full" style={{background: 'linear-gradient(135deg, #D4A574 0%, #FFD700 100%)'}}></div>
           </div>
         </div>
       </section>
@@ -234,45 +227,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* Timeline */}
-      <section className="py-20 bg-gradient-to-br from-amber-50 to-cream-100">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="inline-block px-4 py-2 rounded-full border-2 mb-4" style={{borderColor: '#D4A574', color: '#D4A574'}}>
-              <span className="text-sm font-semibold">OUR JOURNEY</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-coffee-900 mb-4">Milestones Of Impact</h2>
-          </div>
-
-          <div className="space-y-12">
-            {[
-              { year: '2025', title: 'Collective Founded', desc: 'WoinuCoffee launches as an export collective uniting agronomists, traders, and farmer leaders across Sidama and Yirgacheffe.' },
-              { year: '2025', title: 'Farmer Empowerment Fund', desc: 'Created pre-harvest financing and agronomy support for 600+ smallholder families preparing export-ready lots.' },
-              { year: '2026', title: 'First Global Shipments', desc: 'Delivered washed and natural microlots to partners in Europe, Asia, and North America with full traceability.' },
-              { year: '2026', title: 'Sustainability Milestones', desc: 'Installed solar dryers, water recycling, and climate-resilient seedlings across partner washing stations.' },
-              { year: '2027', title: 'Impact Lab Opens', desc: 'Established Addis Ababa cupping lab to provide quality training, sensory data, and community cupping sessions.' },
-              { year: '2028', title: 'Scaling Origin Programs', desc: 'Expanded to Kaffa and Bench Sheko, introducing agroforestry initiatives and women-led cooperative leadership training.' },
-            ].map((milestone, idx) => (
-              <div key={idx} className="flex gap-8 group">
-                <div className="flex-shrink-0 text-right w-24">
-                  <div className="inline-block px-4 py-2 rounded-full font-bold text-white" style={{background: 'linear-gradient(135deg, #D4A574 0%, #FFD700 100%)'}}>
-                    {milestone.year}
-                  </div>
-                </div>
-                <div className="relative flex-grow">
-                  <div className="absolute left-0 top-0 w-1 h-full bg-amber-200"></div>
-                  <div className="absolute left-0 top-0 w-1 bg-gradient-to-b from-transparent group-hover:to-amber-400 transition-all duration-500" style={{height: '0%', animation: 'slideDown 0.8s ease-out forwards', animationDelay: `${idx * 0.1}s`}}></div>
-                  <div className="ml-8 bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border-l-4 group-hover:border-l-8" style={{borderColor: '#D4A574'}}>
-                    <h3 className="text-xl font-bold text-coffee-900 mb-2">{milestone.title}</h3>
-                    <p className="text-amber-800">{milestone.desc}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      
       {/* Statistics */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -304,12 +259,9 @@ const About = () => {
             legendary coffee landscapes.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/contact" className="px-8 py-4 rounded-full font-bold text-coffee-900 transition-all duration-300 hover:shadow-xl hover:scale-105 text-lg inline-flex items-center gap-2" style={{background: 'linear-gradient(135deg, #D4A574 0%, #FFD700 100%)'}}>
+            <Link to="/contact" className="btn btn-primary py-3 text-lg inline-flex items-center gap-2">
               <MapPin className="w-5 h-5" />
               Book A Sourcing Call
-            </Link>
-            <Link to="/menu" className="px-8 py-4 rounded-full font-bold border-2 border-amber-300 text-white hover:bg-white/10 transition-all duration-300 text-lg inline-flex items-center gap-2">
-              Request Sample Set <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
         </div>

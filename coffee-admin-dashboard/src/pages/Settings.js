@@ -6,6 +6,9 @@ import { Lock, Eye, EyeOff, Key } from 'lucide-react';
 import ChangePasswordModal from '../components/ChangePasswordModal';
 
 const Settings = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -113,11 +116,7 @@ const Settings = () => {
           <button
             onClick={saveAllSettings}
             disabled={saving}
-            className={`px-6 py-2 rounded-lg text-white font-semibold ${
-              saving
-                ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-coffee-700 hover:bg-coffee-800 transition'
-            }`}
+            className={`btn-primary ${saving ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             {saving ? 'Saving...' : 'Save Settings'}
           </button>
@@ -140,7 +139,7 @@ const Settings = () => {
             </div>
             <button
               onClick={() => setShowChangePassword(true)}
-              className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors flex items-center gap-2"
+              className="btn-primary inline-flex items-center gap-2"
             >
               <Lock className="w-4 h-4" />
               Change Password

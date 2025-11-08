@@ -6,6 +6,9 @@ import { supabase } from '../lib/supabaseClient';
 import { Coffee, Award, Users, Globe, Leaf, ArrowRight, Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 
 const Home = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [featuredItems, setFeaturedItems] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
@@ -111,52 +114,32 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center justify-center min-h-[80vh]">
             <div className="space-y-6 text-white text-center max-w-4xl">
-              <div className="inline-block px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-amber-300/30 mb-2">
-                <span className="text-amber-200 text-sm font-medium">☕ Established 2025 • Export Vision</span>
-              </div>
               <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-                Elevating Ethiopia's Coffee Legacy
-                <span className="block mt-2" style={{background: 'linear-gradient(135deg, #D4A574 0%, #FFD700 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>
-                  From Origin To Global Markets
-                </span>
+                Every Bean Tells an Ethiopian Story
               </h1>
               <p className="text-xl text-amber-100 leading-relaxed mx-auto">
-                WoinuCoffee partners with Ethiopian growers to deliver traceable, specialty-grade lots to roasters and retailers worldwide—
-                empowering farming communities, protecting our land, and showcasing the birthplace of coffee with every shipment.
+                Connecting growers, roasters, and coffee lovers through heritage and care. We bridge the gap between Ethiopia's ancient coffee traditions and the global specialty coffee market, ensuring every bean tells its unique story from farm to cup.
               </p>
-              <p className="text-lg text-amber-200 italic font-medium">
-                "ቡና ለኢትዮጵያ ምርቃት ነው" – Coffee is Ethiopia’s signature
-              </p>
-              
-              {/* Stats Highlights */}
-              <div className="grid grid-cols-3 gap-6 py-6 max-w-2xl mx-auto">
-                <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-amber-300/20">
-                  <div className="text-3xl md:text-4xl font-bold" style={{color: '#FFD700'}}>
-                    {partnerFarmers >= 1000 ? `${(partnerFarmers / 1000).toFixed(1)}k+` : `${partnerFarmers}+`}
-                  </div>
-                  <div className="text-sm text-amber-200 mt-1">Partner Farmers</div>
-                </div>
-                <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-amber-300/20">
-                  <div className="text-3xl md:text-4xl font-bold" style={{color: '#FFD700'}}>{originProfiles}+</div>
-                  <div className="text-sm text-amber-200 mt-1">Origin Profiles</div>
-                </div>
-                <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-amber-300/20">
-                  <div className="text-3xl md:text-4xl font-bold" style={{color: '#FFD700'}}>
-                    {annualShipments >= 1000 ? `${(annualShipments / 1000).toFixed(1)}k+` : `${annualShipments}+`}
-                  </div>
-                  <div className="text-sm text-amber-200 mt-1">Annual Shipments</div>
-                </div>
-              </div>
 
               <div className="flex flex-wrap gap-4 justify-center">
-                <Link to="/menu" className="px-8 py-4 rounded-full font-bold border-2 border-amber-300 text-white hover:bg-white/10 transition-all duration-300 text-lg inline-flex items-center gap-2">
+                <Link to="/menu" className="btn btn-primary py-3 text-lg inline-flex items-center gap-2">
                   View Catalog <ArrowRight className="w-5 h-5" />
+                </Link>
+                <Link to="/about" className="btn btn-secondary py-3 text-lg inline-flex items-center gap-2">
+                  Learn More <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
             </div>
             <div className="hidden lg:block">
               {/* Empty space to balance layout */}
             </div>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="w-8 h-12 rounded-full border-2 border-amber-300/50 flex items-start justify-center p-2">
+            <div className="w-1 h-3 rounded-full" style={{background: 'linear-gradient(135deg, #D4A574 0%, #FFD700 100%)'}}></div>
           </div>
         </div>
       </section>
@@ -209,14 +192,23 @@ const Home = () => {
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-coffee-900 mb-2">{item.name}</h3>
                   <p className="text-gray-600 mb-4 line-clamp-2">{item.description}</p>
-                  <button className="btn-primary w-full">Request Sample</button>
+                  <Link 
+                    to="/contact" 
+                    state={{ 
+                      subject: `Sample Request: ${item.name}`,
+                      message: `I would like to request a sample of ${item.name}. Please provide information about availability, pricing, and shipping options.\n\nProduct Details:\nName: ${item.name}\nPrice: ${typeof item.price === 'number' ? `$${item.price.toFixed(2)}/lb` : item.price}\nDescription: ${item.description}`
+                    }}
+                    className="btn btn-primary w-full py-3 text-lg inline-flex items-center justify-center"
+                  >
+                    Request Sample
+                  </Link>
                 </div>
               </div>
             ))}
           </div>
 
           <div className="text-center mt-12">
-            <Link to="/menu" className="btn-secondary inline-flex items-center gap-2">
+            <Link to="/menu" className="btn btn-primary py-3 text-lg inline-flex items-center gap-2">
               View Full Portfolio <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
@@ -268,7 +260,7 @@ const Home = () => {
                   <div className="text-sm text-coffee-800">Sustainability Programs</div>
                 </div>
               </div>
-              <Link to="/about" className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:gap-4" style={{color: '#D4A574', border: '2px solid #D4A574'}}>
+              <Link to="/about" className="btn btn-primary py-3 text-lg inline-flex items-center gap-2">
                 Learn About Our Origin Work <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
@@ -311,7 +303,7 @@ const Home = () => {
                   "We export more than coffee—we export Ethiopia’s stories, steward livelihoods, and safeguard the forests that birthed coffee."
                 </p>
               </div>
-              <Link to="/menu" className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:shadow-xl hover:scale-105" style={{background: 'linear-gradient(135deg, #D4A574 0%, #FFD700 100%)'}}>
+              <Link to="/menu" className="btn btn-primary py-3 text-lg inline-flex items-center gap-2">
                 Review Our Catalog <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
@@ -447,7 +439,7 @@ const Home = () => {
             Tell us about your sourcing needs and receive curated Ethiopian lots, cupping notes, and logistics support.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/contact" className="btn-primary">
+            <Link to="/contact" className="btn btn-primary py-3 text-lg">
               Start A Conversation
             </Link>
           </div>

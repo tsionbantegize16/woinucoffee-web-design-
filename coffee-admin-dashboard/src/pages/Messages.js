@@ -3,6 +3,9 @@ import { supabase } from '../lib/supabaseClient';
 import toast, { Toaster } from 'react-hot-toast';
 
 const Messages = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {

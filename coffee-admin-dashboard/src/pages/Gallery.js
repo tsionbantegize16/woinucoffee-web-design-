@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { Plus, Trash2, Upload, X, Image as ImageIcon, Heart } from 'lucide-react';
+import { Plus, Trash2, Upload, X, Image as ImageIcon, Heart, Edit } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
 const Gallery = () => {
@@ -307,23 +307,28 @@ const Gallery = () => {
               />
               <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all flex items-center justify-center gap-2">
                 <button 
+                  type="button"
                   onClick={() => openEditModal(img)}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity bg-green-500 text-white px-3 py-2 rounded-lg hover:bg-green-600 text-sm font-medium"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity btn-icon btn-icon-primary"
+                  aria-label="Edit image"
                 >
-                  Edit
+                  <Edit className="w-4 h-4" />
                 </button>
                 <button 
+                  type="button"
                   onClick={() => toggleActive(img.id, img.is_active)}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity bg-blue-500 text-white px-3 py-2 rounded-lg hover:bg-blue-600 text-sm font-medium"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity btn btn-secondary btn-compact inline-flex items-center gap-2"
                   title={img.is_active ? 'Deactivate' : 'Activate'}
                 >
                   {img.is_active ? 'Hide' : 'Show'}
                 </button>
                 <button 
+                  type="button"
                   onClick={() => openDeleteModal(img)}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity bg-red-500 text-white p-2 rounded-lg hover:bg-red-600"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity btn-icon btn-icon-danger"
+                  aria-label="Delete image"
                 >
-                  <Trash2 className="w-5 h-5" />
+                  <Trash2 className="w-4 h-4" />
                 </button>
               </div>
               {!img.is_active && (
@@ -365,7 +370,7 @@ const Gallery = () => {
               <h2 className="text-2xl font-bold text-coffee-900">Add New Image</h2>
               <button 
                 onClick={() => setShowModal(false)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="text-gray-400 hover:text-gray-600 transition-colors p-2"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -485,7 +490,7 @@ const Gallery = () => {
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-6 py-3 border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-semibold"
+                  className="btn-outline"
                 >
                   Cancel
                 </button>
@@ -493,34 +498,51 @@ const Gallery = () => {
             </form>
           </div>
         </div>
-      )}
+        )}
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && imageToDelete && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
-            <div className="text-center">
-              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
-                <Trash2 className="h-6 w-6 text-red-600" />
+        <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl">
+            <div className="text-center space-y-5">
+              <div className="mx-auto w-20 h-20 rounded-2xl bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center shadow-inner">
+                <Trash2 className="w-10 h-10 text-red-500" />
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Delete Image</h3>
-              <p className="text-sm text-gray-500 mb-4">
-                Are you sure you want to delete "<span className="font-semibold">{imageToDelete.title}</span>"? This action cannot be undone.
+              <div>
+                <h3 className="text-2xl font-bold text-coffee-900">Delete Image</h3>
+                <p className="text-sm text-gray-600">
+                  Are you sure you want to remove <span className="font-semibold text-coffee-800">"{imageToDelete.title}"</span> from the gallery?
+                </p>
+              </div>
+              {imageToDelete.image_url && (
+                <div className="overflow-hidden rounded-2xl border border-gray-200">
+                  <img
+                    src={imageToDelete.image_url}
+                    alt={imageToDelete.title}
+                    className="w-full h-40 object-cover"
+                  />
+                </div>
+              )}
+              <p className="text-xs text-gray-500">
+                This action cannot be undone. The image will be permanently removed from your website gallery.
               </p>
-              <div className="flex gap-3">
+              <div className="flex gap-3 pt-2">
                 <button
+                  type="button"
                   onClick={() => {
                     setShowDeleteModal(false);
                     setImageToDelete(null);
                   }}
-                  className="flex-1 px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-semibold"
+                  className="btn btn-outline flex-1 py-3"
                 >
                   Cancel
                 </button>
                 <button
+                  type="button"
                   onClick={confirmDelete}
-                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold"
+                  className="btn btn-danger flex-1 py-3 inline-flex items-center justify-center gap-2"
                 >
+                  <Trash2 className="w-4 h-4" />
                   Delete
                 </button>
               </div>
@@ -665,7 +687,7 @@ const Gallery = () => {
                     setSelectedFile(null);
                     setPreviewUrl('');
                   }}
-                  className="px-6 py-3 border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-semibold"
+                  className="btn btn-outline inline-flex items-center gap-2"
                 >
                   Cancel
                 </button>

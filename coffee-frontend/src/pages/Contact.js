@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { supabase } from '../lib/supabaseClient';
@@ -6,6 +7,7 @@ import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
 const Contact = () => {
+  const location = useLocation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,21 +17,48 @@ const Contact = () => {
   });
   const [submitting, setSubmitting] = useState(false);
 
+  // Pre-fill form data if coming from Request Sample button
+  useEffect(() => {
+    if (location.state) {
+      setFormData(prev => ({
+        ...prev,
+        subject: location.state.subject || '',
+        message: location.state.message || '',
+      }));
+    }
+  }, [location.state]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
 
     try {
-      const { error } = await supabase
+      console.log('Submitting contact form:', formData);
+      
+      const { data, error } = await supabase
         .from('contact_messages')
-        .insert([formData]);
+        .insert([formData])
+        .select(); // Add .select() to return the inserted data
 
-      if (error) throw error;
+      console.log('Supabase response:', { data, error });
 
-      toast.success('Message sent successfully! We\'ll get back to you soon.');
-      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+
+      if (data && data.length > 0) {
+        console.log('Message inserted successfully:', data[0]);
+        toast.success('Message sent successfully! We\'ll get back to you soon.');
+        setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+      } else {
+        console.warn('No data returned after insertion');
+        toast.success('Message sent successfully! We\'ll get back to you soon.');
+        setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+      }
     } catch (error) {
-      toast.error('Failed to send message. Please try again.');
+      console.error('Contact form submission error:', error);
+      toast.error(`Failed to send message: ${error.message || 'Unknown error'}`);
     } finally {
       setSubmitting(false);
     }

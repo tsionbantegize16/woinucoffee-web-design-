@@ -5,6 +5,10 @@ import toast, { Toaster } from 'react-hot-toast';
 import MenuItemForm from '../components/MenuItemForm';
 
 const MenuItems = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,6 +16,8 @@ const MenuItems = () => {
   const [editingItem, setEditingItem] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   useEffect(() => {
     fetchItems();
@@ -65,12 +71,19 @@ const MenuItems = () => {
     fetchItems();
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Delete this menu item?')) return;
+  const handleDelete = (item) => {
+    setItemToDelete(item);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!itemToDelete) return;
     try {
-      const { error } = await supabase.from('menu_items').delete().eq('id', id);
+      const { error } = await supabase.from('menu_items').delete().eq('id', itemToDelete.id);
       if (error) throw error;
       toast.success('Menu item deleted!');
+      setShowDeleteModal(false);
+      setItemToDelete(null);
       fetchItems();
     } catch (error) {
       toast.error('Failed to delete menu item');
@@ -199,14 +212,18 @@ const MenuItems = () => {
               
               <div className="flex gap-2 pt-2">
                 <button
+                  type="button"
                   onClick={() => handleEdit(item)}
-                  className="btn-secondary flex-1 text-sm py-2 flex items-center justify-center gap-1"
+                  className="btn-icon btn-icon-secondary"
+                  aria-label={`Edit ${item.name}`}
                 >
-                  <Edit className="w-4 h-4" /> Edit
+                  <Edit className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={() => handleDelete(item.id)}
-                  className="btn-danger text-sm py-2 px-3"
+                  type="button"
+                  onClick={() => handleDelete(item)}
+                  className="btn-icon btn-icon-danger"
+                  aria-label={`Delete ${item.name}`}
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -234,6 +251,57 @@ const MenuItems = () => {
           onClose={handleCloseModal}
           onSuccess={handleFormSuccess}
         />
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl transform transition-all">
+            <div className="text-center">
+              {/* Animated Icon */}
+              <div className="w-20 h-20 bg-gradient-to-br from-red-50 to-red-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+                <Trash2 className="w-10 h-10 text-red-500" />
+              </div>
+              
+              {/* Title */}
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Delete Menu Item</h3>
+              
+              {/* Description */}
+              <p className="text-gray-600 mb-2">
+                Are you sure you want to delete this menu item?
+              </p>
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
+                <p className="font-semibold text-amber-900 text-lg">{itemToDelete?.name}</p>
+                {itemToDelete?.price && (
+                  <p className="text-amber-700">${itemToDelete.price}</p>
+                )}
+              </div>
+              <p className="text-sm text-gray-500 mb-8">
+                This action cannot be undone. The item will be permanently removed from your menu.
+              </p>
+              
+              {/* Buttons */}
+              <div className="flex gap-4">
+                <button
+                  onClick={() => {
+                    setShowDeleteModal(false);
+                    setItemToDelete(null);
+                  }}
+                  className="btn btn-outline flex-1 py-3 px-4"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmDelete}
+                  className="btn btn-danger flex-1 py-3 px-4 inline-flex items-center justify-center gap-2"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Delete Item
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
