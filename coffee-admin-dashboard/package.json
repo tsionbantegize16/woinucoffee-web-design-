@@ -2,6 +2,7 @@
   "name": "woinucoffee-admin-dashboard",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://woinucoffee.com/admin",
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.2.0",
