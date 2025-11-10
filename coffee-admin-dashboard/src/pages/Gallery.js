@@ -257,7 +257,12 @@ const Gallery = () => {
         </div>
         <button 
           onClick={() => setShowModal(true)}
-          className="btn-primary flex items-center gap-2 hover:scale-105 transition-transform"
+          className="flex items-center gap-2 px-6 py-3 font-bold shadow-md border-2 rounded-xl transition-all hover:shadow-lg hover:scale-105"
+          style={{
+            background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+            color: '#FFFFFF',
+            borderColor: '#B8956A'
+          }}
         >
           <Plus className="w-5 h-5" />
           Add Image
@@ -309,7 +314,12 @@ const Gallery = () => {
                 <button 
                   type="button"
                   onClick={() => openEditModal(img)}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity btn-icon btn-icon-primary"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity p-2 rounded-lg font-medium text-sm"
+                  style={{
+                    background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+                    color: '#FFFFFF',
+                    border: '2px solid #B8956A'
+                  }}
                   aria-label="Edit image"
                 >
                   <Edit className="w-4 h-4" />
@@ -317,7 +327,12 @@ const Gallery = () => {
                 <button 
                   type="button"
                   onClick={() => toggleActive(img.id, img.is_active)}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity btn btn-secondary btn-compact inline-flex items-center gap-2"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity px-3 py-2 rounded-lg font-medium text-sm"
+                  style={{
+                    background: img.is_active ? 'linear-gradient(135deg, #9CA3AF 0%, #6B7280 100%)' : 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                    color: '#FFFFFF',
+                    border: img.is_active ? '2px solid #4B5563' : '2px solid #047857'
+                  }}
                   title={img.is_active ? 'Deactivate' : 'Activate'}
                 >
                   {img.is_active ? 'Hide' : 'Show'}
@@ -325,7 +340,12 @@ const Gallery = () => {
                 <button 
                   type="button"
                   onClick={() => openDeleteModal(img)}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity btn-icon btn-icon-danger"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity p-2 rounded-lg font-medium text-sm"
+                  style={{
+                    background: 'linear-gradient(135deg, #DC2626 0%, #B91C1C 100%)',
+                    color: '#FFFFFF',
+                    border: '2px solid #991B1B'
+                  }}
                   aria-label="Delete image"
                 >
                   <Trash2 className="w-4 h-4" />

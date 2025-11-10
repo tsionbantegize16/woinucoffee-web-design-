@@ -137,7 +137,11 @@ const Categories = () => {
           <h1 className="text-3xl font-bold text-coffee-900">Categories</h1>
           <p className="text-gray-600 mt-1">Organize your menu items</p>
         </div>
-        <button onClick={() => { resetForm(); setIsModalOpen(true); }} className="btn-primary flex items-center gap-2">
+        <button onClick={() => { resetForm(); setIsModalOpen(true); }} className="flex items-center gap-2 px-6 py-3 font-bold shadow-md border-2 rounded-xl transition-all hover:shadow-lg" style={{
+            background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+            color: '#FFFFFF',
+            borderColor: '#B8956A'
+          }}>
           <Plus className="w-5 h-5" />
           Add Category
         </button>
@@ -172,7 +176,12 @@ const Categories = () => {
                     <button
                       type="button"
                       onClick={() => handleEdit(category)}
-                      className="btn-icon btn-icon-secondary"
+                      className="p-2 rounded-lg transition-all hover:shadow-md font-medium text-sm"
+                      style={{
+                        background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+                        color: '#FFFFFF',
+                        border: '2px solid #B8956A'
+                      }}
                       aria-label={`Edit ${category.name}`}
                     >
                       <Edit className="w-4 h-4" />
@@ -180,7 +189,12 @@ const Categories = () => {
                     <button
                       type="button"
                       onClick={() => handleDelete(category)}
-                      className="btn-icon btn-icon-danger"
+                      className="p-2 rounded-lg transition-all hover:shadow-md font-medium text-sm"
+                      style={{
+                        background: 'linear-gradient(135deg, #DC2626 0%, #B91C1C 100%)',
+                        color: '#FFFFFF',
+                        border: '2px solid #991B1B'
+                      }}
                       aria-label={`Delete ${category.name}`}
                     >
                       <Trash2 className="w-4 h-4" />
@@ -228,8 +242,16 @@ const Categories = () => {
               </label>
 
               <div className="flex gap-3 pt-4">
-                <button type="button" onClick={() => { setIsModalOpen(false); resetForm(); }} className="btn-outline flex-1">Cancel</button>
-                <button type="submit" className="btn-primary flex-1">{editingCategory ? 'Update' : 'Add'}</button>
+                <button type="button" onClick={() => { setIsModalOpen(false); resetForm(); }} className="flex-1 px-6 py-3 font-bold shadow-md border-2 rounded-xl transition-all hover:shadow-lg" style={{
+                  background: 'linear-gradient(135deg, #9CA3AF 0%, #6B7280 100%)',
+                  color: '#FFFFFF',
+                  borderColor: '#4B5563'
+                }}>Cancel</button>
+                <button type="submit" className="flex-1 px-6 py-3 font-bold shadow-md border-2 rounded-xl transition-all hover:shadow-lg" style={{
+                  background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+                  color: '#FFFFFF',
+                  borderColor: '#B8956A'
+                }}>{editingCategory ? 'Update' : 'Add'}</button>
               </div>
             </form>
           </div>

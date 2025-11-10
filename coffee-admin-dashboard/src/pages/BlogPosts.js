@@ -87,7 +87,11 @@ const BlogPosts = () => {
           <h1 className="text-4xl font-bold text-coffee-900 mb-2">Blog Posts</h1>
           <p className="text-lg text-coffee-600">Create and manage your blog content</p>
         </div>
-        <button onClick={handleNewPost} className="btn-primary flex items-center gap-2 text-lg px-6 py-3 shadow-lg hover:shadow-xl">
+        <button onClick={handleNewPost} className="flex items-center gap-2 text-lg px-6 py-3 font-bold shadow-md border-2 rounded-xl transition-all hover:shadow-lg" style={{
+            background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+            color: '#FFFFFF',
+            borderColor: '#B8956A'
+          }}>
           <Plus className="w-5 h-5" />New Post
         </button>
       </div>
@@ -219,7 +223,12 @@ const BlogPosts = () => {
                 <button
                   type="button"
                   onClick={() => handleEditPost(post)}
-                  className="btn-icon btn-icon-secondary"
+                  className="p-2 rounded-lg transition-all hover:shadow-md font-medium text-sm"
+                  style={{
+                    background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+                    color: '#FFFFFF',
+                    border: '2px solid #B8956A'
+                  }}
                   aria-label={`Edit ${post.title}`}
                 >
                   <Edit className="w-4 h-4" />
@@ -227,7 +236,12 @@ const BlogPosts = () => {
                 <button
                   type="button"
                   onClick={() => handleDelete(post)}
-                  className="btn-icon btn-icon-danger"
+                  className="p-2 rounded-lg transition-all hover:shadow-md font-medium text-sm"
+                  style={{
+                    background: 'linear-gradient(135deg, #DC2626 0%, #B91C1C 100%)',
+                    color: '#FFFFFF',
+                    border: '2px solid #991B1B'
+                  }}
                   aria-label={`Delete ${post.title}`}
                 >
                   <Trash2 className="w-4 h-4" />
@@ -246,7 +260,11 @@ const BlogPosts = () => {
           </div>
           <h3 className="text-xl font-semibold text-coffee-800 mb-2">No blog posts yet</h3>
           <p className="text-coffee-600 mb-6">Start creating content for your audience</p>
-          <button onClick={handleNewPost} className="btn-primary inline-flex items-center gap-2">
+          <button onClick={handleNewPost} className="inline-flex items-center gap-2 px-6 py-3 font-bold shadow-md border-2 rounded-xl transition-all hover:shadow-lg" style={{
+            background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+            color: '#FFFFFF',
+            borderColor: '#B8956A'
+          }}>
             <Plus className="w-5 h-5" /> Create First Post
           </button>
         </div>

@@ -16,7 +16,7 @@ import Settings from './pages/Settings';
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      <Router basename="/admin">
         <ScrollToTop behavior="smooth" />
         <Routes>
           <Route path="/login" element={<Login />} />

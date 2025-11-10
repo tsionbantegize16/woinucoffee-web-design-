@@ -117,7 +117,12 @@ const MenuItems = () => {
         </div>
         <button
           onClick={handleNewItem}
-          className="btn-primary flex items-center gap-2 text-lg px-6 py-3"
+          className="flex items-center gap-2 text-lg px-6 py-3 font-bold shadow-md border-2 rounded-xl transition-all hover:shadow-lg"
+          style={{
+            background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+            color: '#FFFFFF',
+            borderColor: '#B8956A'
+          }}
         >
           <Plus className="w-5 h-5" /> Add Item
         </button>
@@ -214,7 +219,12 @@ const MenuItems = () => {
                 <button
                   type="button"
                   onClick={() => handleEdit(item)}
-                  className="btn-icon btn-icon-secondary"
+                  className="p-2 rounded-lg transition-all hover:shadow-md font-medium text-sm"
+                  style={{
+                    background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+                    color: '#FFFFFF',
+                    border: '2px solid #B8956A'
+                  }}
                   aria-label={`Edit ${item.name}`}
                 >
                   <Edit className="w-4 h-4" />
@@ -222,7 +232,12 @@ const MenuItems = () => {
                 <button
                   type="button"
                   onClick={() => handleDelete(item)}
-                  className="btn-icon btn-icon-danger"
+                  className="p-2 rounded-lg transition-all hover:shadow-md font-medium text-sm"
+                  style={{
+                    background: 'linear-gradient(135deg, #DC2626 0%, #B91C1C 100%)',
+                    color: '#FFFFFF',
+                    border: '2px solid #991B1B'
+                  }}
                   aria-label={`Delete ${item.name}`}
                 >
                   <Trash2 className="w-4 h-4" />

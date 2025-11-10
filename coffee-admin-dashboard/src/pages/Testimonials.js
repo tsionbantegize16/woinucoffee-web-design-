@@ -121,7 +121,12 @@ const Testimonials = () => {
         </div>
         <button
           onClick={handleNewTestimonial}
-          className="btn-primary flex items-center gap-2 text-lg px-6 py-3 shadow-lg hover:shadow-xl"
+          className="flex items-center gap-2 text-lg px-6 py-3 font-bold shadow-md border-2 rounded-xl transition-all hover:shadow-lg"
+          style={{
+            background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+            color: '#FFFFFF',
+            borderColor: '#B8956A'
+          }}
         >
           <Plus className="w-5 h-5" /> Add Testimonial
         </button>
@@ -268,7 +273,11 @@ const Testimonials = () => {
           </div>
           <h3 className="text-xl font-semibold text-coffee-800 mb-2">No testimonials yet</h3>
           <p className="text-coffee-600 mb-6">Start collecting customer reviews</p>
-          <button onClick={handleNewTestimonial} className="btn-primary inline-flex items-center gap-2">
+          <button onClick={handleNewTestimonial} className="inline-flex items-center gap-2 px-6 py-3 font-bold shadow-md border-2 rounded-xl transition-all hover:shadow-lg" style={{
+            background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+            color: '#FFFFFF',
+            borderColor: '#B8956A'
+          }}>
             <Plus className="w-5 h-5" /> Add First Testimonial
           </button>
         </div>

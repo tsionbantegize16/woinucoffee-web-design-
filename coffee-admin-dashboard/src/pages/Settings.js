@@ -116,7 +116,12 @@ const Settings = () => {
           <button
             onClick={saveAllSettings}
             disabled={saving}
-            className={`btn-primary ${saving ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`px-6 py-3 font-bold shadow-md border-2 rounded-xl transition-all hover:shadow-lg ${saving ? 'opacity-50 cursor-not-allowed' : ''}`}
+            style={{
+              background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+              color: '#FFFFFF',
+              borderColor: '#B8956A'
+            }}
           >
             {saving ? 'Saving...' : 'Save Settings'}
           </button>
@@ -139,7 +144,12 @@ const Settings = () => {
             </div>
             <button
               onClick={() => setShowChangePassword(true)}
-              className="btn-primary inline-flex items-center gap-2"
+              className="inline-flex items-center gap-2 px-6 py-3 font-bold shadow-md border-2 rounded-xl transition-all hover:shadow-lg"
+              style={{
+                background: 'linear-gradient(135deg, #D4A574 0%, #C19A6B 100%)',
+                color: '#FFFFFF',
+                borderColor: '#B8956A'
+              }}
             >
               <Lock className="w-4 h-4" />
               Change Password
