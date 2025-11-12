@@ -195,10 +195,12 @@ const MenuItems = () => {
                 <h3 className="text-xl font-bold text-coffee-900 group-hover:text-amber-600 transition-colors">
                   {item.name}
                 </h3>
-                <div className="flex items-center gap-1 bg-amber-100 text-amber-700 px-3 py-1 rounded-full">
-                  <DollarSign className="w-4 h-4" />
-                  <span className="font-bold">{item.price}</span>
-                </div>
+                {item.price && (
+                  <div className="flex items-center gap-1 bg-amber-100 text-amber-700 px-3 py-1 rounded-full">
+                    <DollarSign className="w-4 h-4" />
+                    <span className="font-bold">{item.price}</span>
+                  </div>
+                )}
               </div>
               
               <p className="text-coffee-600 text-sm line-clamp-2">{item.description || 'No description available'}</p>

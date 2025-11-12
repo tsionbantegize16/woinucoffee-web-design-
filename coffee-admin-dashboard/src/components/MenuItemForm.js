@@ -99,8 +99,8 @@ const MenuItemForm = ({ item = null, categories = [], onClose, onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.price || !formData.category_id) {
-      toast.error('Name, price, and category are required');
+    if (!formData.name || !formData.category_id) {
+      toast.error('Name and category are required');
       return;
     }
 
@@ -119,7 +119,7 @@ const MenuItemForm = ({ item = null, categories = [], onClose, onSuccess }) => {
       const dataToSave = {
         ...formData,
         slug,
-        price: parseFloat(formData.price),
+        price: formData.price ? parseFloat(formData.price) : null,
         image_url: imageUrl,
       };
 
@@ -222,12 +222,11 @@ const MenuItemForm = ({ item = null, categories = [], onClose, onSuccess }) => {
 
               {/* Price */}
               <div>
-                <label className="label">Price *</label>
+                <label className="label">Price (optional)</label>
                 <input
                   type="number"
                   name="price"
                   step="0.01"
-                  required
                   value={formData.price}
                   onChange={handleChange}
                   className="input-field"

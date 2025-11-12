@@ -89,9 +89,11 @@ const Menu = () => {
                     <h3 className="text-xl font-bold text-coffee-900">{item.name}</h3>
                     <p className="text-sm text-amber-700">{item.categories?.name}</p>
                   </div>
-                  <span className="text-2xl font-bold" style={{color: '#D4A574'}}>
-                    {typeof item.price === 'number' ? `$${Number(item.price).toFixed(2)}/lb` : item.price}
-                  </span>
+                  {item.price && (
+                    <span className="text-2xl font-bold" style={{color: '#D4A574'}}>
+                      {typeof item.price === 'number' ? `$${Number(item.price).toFixed(2)}/lb` : item.price}
+                    </span>
+                  )}
                 </div>
                 <p className="text-amber-900 mb-4">{item.description}</p>
                 {item.ingredients && item.ingredients.length > 0 && (

@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { supabase } from '../lib/supabaseClient';
-import { Calendar, User } from 'lucide-react';
+import { Calendar, User, ArrowLeft } from 'lucide-react';
 
 const BlogPost = () => {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchPost();
@@ -29,6 +30,16 @@ const BlogPost = () => {
       <Navbar />
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Back Button */}
+        <button
+          onClick={() => navigate('/blog')}
+          className="flex items-center gap-2 text-coffee-700 hover:text-coffee-900 transition-colors mb-8 group"
+          style={{ color: '#8B5530' }}
+        >
+          <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+          <span className="font-medium">Back to Blog</span>
+        </button>
+
         {post.featured_image && (
           <img 
             src={post.featured_image} 
